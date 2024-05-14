@@ -5,6 +5,7 @@ import {
     PUBLIC_SUPABASE_DEV_ANON,
     PUBLIC_SUPABASE_DEV_URL
 } from '$env/static/public'
+import { getProfileById } from '$lib/db/helpers.js'
 import type { Database } from '$lib/db/types'
 import { createBrowserClient, createServerClient, isBrowser, parse } from '@supabase/ssr'
 
@@ -55,11 +56,7 @@ export const load = (async ({ fetch, data, depends }) => {
         session,
         user: {
             ...user,
-            profile: session?.user?.id ? await supabase
-                .from('profiles')
-                .select()
-                .eq('id', session?.user?.id!)
-                .maybeSingle() : undefined
+            profile: session?.user?.id ? await getProfileById(supabase, session.user.id) : undefined
         },
 
     }

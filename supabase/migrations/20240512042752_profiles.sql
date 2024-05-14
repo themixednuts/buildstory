@@ -1,7 +1,7 @@
 CREATE TABLE "profiles" (
     "id" uuid PRIMARY KEY NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
     "username" varchar(15) NOT NULL,
-    "display_name" varchar(15),
+    "name" varchar(35),
     "email" text NOT NULL,
     "bio" text,
     "twitter" TEXT UNIQUE,
