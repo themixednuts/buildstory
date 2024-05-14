@@ -55,11 +55,11 @@ export const load = (async ({ fetch, data, depends }) => {
         session,
         user: {
             ...user,
-            profile: await supabase
+            profile: session?.user?.id ? await supabase
                 .from('profiles')
                 .select()
-                .eq('id', session?.user.id || '')
-                .maybeSingle()
+                .eq('id', session?.user?.id!)
+                .maybeSingle() : undefined
         },
 
     }

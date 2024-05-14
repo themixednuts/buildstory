@@ -27,11 +27,11 @@
 		{
 			label: 'Shipathons',
 			href: '/shipathons'
-		},
-		{
-			label: 'Settings',
-			href: '/settings'
 		}
+		// {
+		// 	label: 'Settings',
+		// 	href: '/settings'
+		// }
 	];
 </script>
 
