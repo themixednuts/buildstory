@@ -22,8 +22,6 @@
 	import { onMount } from 'svelte';
 	import Heading from '$lib/components/heading';
 	import { Button } from '$lib/shadcn/components/ui/button';
-	import { Checkbox } from '$lib/shadcn/components/ui/checkbox';
-	import Switch from '$lib/shadcn/components/ui/switch/switch.svelte';
 
 	const { data } = $props();
 	const { user } = $derived(data);
