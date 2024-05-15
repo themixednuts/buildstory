@@ -345,12 +345,12 @@ export type Database = {
           bio: string | null
           created_at: string
           discord: string | null
-          display_name: string | null
           email: string
           github: string | null
           id: string
           location: string | null
           muted: boolean | null
+          name: string | null
           twitch: string | null
           twitter: string | null
           updated_at: string
@@ -361,12 +361,12 @@ export type Database = {
           bio?: string | null
           created_at?: string
           discord?: string | null
-          display_name?: string | null
           email: string
           github?: string | null
           id: string
           location?: string | null
           muted?: boolean | null
+          name?: string | null
           twitch?: string | null
           twitter?: string | null
           updated_at?: string
@@ -377,12 +377,12 @@ export type Database = {
           bio?: string | null
           created_at?: string
           discord?: string | null
-          display_name?: string | null
           email?: string
           github?: string | null
           id?: string
           location?: string | null
           muted?: boolean | null
+          name?: string | null
           twitch?: string | null
           twitter?: string | null
           updated_at?: string

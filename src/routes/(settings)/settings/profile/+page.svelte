@@ -5,11 +5,38 @@
 	import * as Form from '$lib/shadcn/components/ui/form';
 	import { Input } from '$lib/shadcn/components/ui/input';
 	import { Textarea } from '$lib/shadcn/components/ui/textarea';
+	import { toast } from 'svelte-sonner';
+	import { At } from 'phosphor-svelte';
+
 	const { data } = $props();
+	const { user } = $derived(data);
 
 	const form = superForm(data.form, {
-		validators: zodClient(schema)
+		validators: zodClient(schema),
+		onUpdated: async ({ form }) => {
+			if (form.valid) {
+				toast.success(form.message);
+			} else {
+				toast.error(form.message);
+			}
+		},
+		onError: async ({ result }) => {
+			toast.error(`${result.type} ${result.status}`, {
+				description: result.error.message
+			});
+		},
+		invalidateAll: true
 	});
+
+	$inspect(user.profile!.data);
+
+	$effect(() => {
+		$formData.name = user.profile!.data!.name;
+		$formData.email = user.profile!.data!.email;
+		$formData.username = user.profile!.data!.username;
+		$formData.bio = user.profile!.data!.bio;
+	});
+
 	const { form: formData, enhance } = form;
 </script>
 
@@ -33,7 +60,10 @@
 	<Form.Field {form} name="username">
 		<Form.Control let:attrs>
 			<Form.Label>Username</Form.Label>
-			<Input {...attrs} bind:value={$formData.username} />
+			<div class="relative w-full">
+				<At class="absolute left-1 top-1/2 -translate-y-1/2" />
+				<Input {...attrs} class="pl-5" bind:value={$formData.username} />
+			</div>
 		</Form.Control>
 		<Form.Description>Public username</Form.Description>
 		<Form.FieldErrors />
