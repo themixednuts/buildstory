@@ -12,13 +12,14 @@ const ACCEPTED_IMAGE_MIME_TYPES = [
 
 export const schema = profilesInsertSchema.omit({ id: true }).extend({
 	avatar: z
-		.instanceof(File)
+		.instanceof(File, { message: 'Please upload a file.' })
 		.refine((f) => f.size < MAX_FILE_SIZE, 'Max file size is 2 MB.')
 		.refine(
 			(f) => ACCEPTED_IMAGE_MIME_TYPES.includes(f.type),
 			'Only .jpg, .jpeg, .png and .webp formats are supported.'
 		)
-		.or(z.string().url())
+		.or(z.string())
+		.nullable()
 		.optional(),
 });
 export type Schema = typeof schema;
