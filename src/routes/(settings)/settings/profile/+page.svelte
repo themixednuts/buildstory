@@ -51,7 +51,7 @@
 	});
 </script>
 
-<form method="post" use:enhance enctype="multipart/form-data">
+<form method="post" use:enhance class="flex flex-col gap-6" enctype="multipart/form-data">
 	<Form.Field {form} name="avatar">
 		<Form.Control let:attrs>
 			<Avatar.Root class="size-16">
@@ -169,5 +169,7 @@
 		<!-- <Form.Description>Twitter</Form.Description> -->
 		<Form.FieldErrors />
 	</Form.Field>
-	<Form.Button>Submit</Form.Button>
+	<div>
+		<Form.Button>Submit</Form.Button>
+	</div>
 </form>
