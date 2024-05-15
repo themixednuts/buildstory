@@ -21,7 +21,6 @@ export const actions = {
 		if (!user?.id) return fail(400, { form });
 		if (!form.valid) return fail(400, { form });
 
-		console.log(form.data);
 		const { avatar: file } = form.data;
 
 		if (file && file instanceof File) {
@@ -47,16 +46,22 @@ export const actions = {
 			if (!url) {
 				return message(form, 'Issue with getting Public URL', { status: 500 });
 			}
+
 			form.data.avatar = url.publicUrl;
 		} else {
 			form.data.avatar = undefined;
 		}
 
 		//@ts-expect-error
-		await updateProfile(supabase, { ...form.data, id: user.id });
+		const { error } = await updateProfile(supabase, { ...form.data, id: user.id });
 
-		return {
-			form,
-		};
+		if (error) {
+			//	TODO handle each conflict case instead of this generic
+			const id = crypto.randomUUID();
+			console.log(id, error);
+			return message(form, `Issue with updating form! id: ${id}`, { status: 500 });
+		}
+
+		return message(form, 'Updated profile!');
 	},
 };

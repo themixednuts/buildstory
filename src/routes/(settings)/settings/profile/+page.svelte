@@ -13,10 +13,9 @@
 	const { data } = $props();
 	const { user } = $derived(data);
 
-	$inspect(user.profile);
-
 	const form = superForm(data.form, {
 		validators: zodClient(schema),
+		dataType: 'json',
 		onUpdated: async ({ form }) => {
 			if (form.valid) {
 				for (const key of Object.keys($formData)) {
@@ -30,10 +29,10 @@
 		},
 		onError: async ({ result }) => {
 			toast.error(`${result.type} ${result.status}`, {
-				description: result.error.message
+				description: result.error.message,
 			});
 		},
-		invalidateAll: true
+		invalidateAll: true,
 	});
 
 	const { form: formData, enhance } = form;
@@ -52,10 +51,10 @@
 	});
 </script>
 
-<form method="post" use:enhance>
-	<Avatar.Root class="size-16">
-		<Form.Field {form} name="avatar">
-			<Form.Control let:attrs>
+<form method="post" use:enhance enctype="multipart/form-data">
+	<Form.Field {form} name="avatar">
+		<Form.Control let:attrs>
+			<Avatar.Root class="size-16">
 				{#if $formData}
 					<input
 						{...attrs}
@@ -65,19 +64,19 @@
 						bind:this={pfpEle}
 					/>
 				{/if}
-			</Form.Control>
-			<Form.FieldErrors />
-		</Form.Field>
-		<button
-			type="button"
-			class="size-full"
-			onclick={() => {
-				pfpEle?.click();
-			}}
-		>
-			<Avatar.Image src={user.profile?.data?.avatar} alt="" />
-		</button>
-	</Avatar.Root>
+				<button
+					type="button"
+					class="size-full"
+					onclick={() => {
+						pfpEle?.click();
+					}}
+				>
+					<Avatar.Image src={user.profile?.data?.avatar} alt="" />
+				</button>
+			</Avatar.Root>
+		</Form.Control>
+		<Form.FieldErrors />
+	</Form.Field>
 	<Form.Field {form} name="username">
 		<Form.Control let:attrs>
 			<Form.Label>Username</Form.Label>
