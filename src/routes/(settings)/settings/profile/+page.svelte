@@ -7,6 +7,7 @@
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
 	import { toast } from 'svelte-sonner';
 	import {
+		ArrowSquareOut,
 		At,
 		DiscordLogo,
 		EnvelopeSimple,
@@ -14,6 +15,7 @@
 		IdentificationBadge,
 		MapPin,
 		TwitchLogo,
+		WarningCircle,
 		XLogo,
 	} from 'phosphor-svelte';
 	import { schema } from './schema.js';
@@ -123,17 +125,26 @@
 					<data>
 						<Form.Label>Email</Form.Label>
 						<Form.Description>
-							Your email will be used to send you notifications and reset your password.
+							Your email will be used to send you notifications and verifications.
 						</Form.Description>
 					</data>
 					<div class="relative w-full">
-						<Input {...attrs} class="peer pl-8" bind:value={$formData.email} />
+						<Input {...attrs} class="peer pl-8" bind:value={$formData.email} readonly />
 						<EnvelopeSimple
 							size={16}
 							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
 						/>
 					</div>
 				</Form.Control>
+				<Form.Description class="pt-1">
+					<a
+						class="hover:text-native-foreground inline-flex items-center gap-2 text-sm underline"
+						href="/update-email"
+					>
+						Need to update your email?
+						<ArrowSquareOut size={16} />
+					</a>
+				</Form.Description>
 				<Form.FieldErrors />
 			</Form.Field>
 		</div>
