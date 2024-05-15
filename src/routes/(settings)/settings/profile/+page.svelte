@@ -6,9 +6,22 @@
 	import { Textarea } from '$lib/shadcn/components/ui/textarea';
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
 	import { toast } from 'svelte-sonner';
-	import { At } from 'phosphor-svelte';
+	import {
+		At,
+		DiscordLogo,
+		EnvelopeSimple,
+		GithubLogo,
+		IdentificationBadge,
+		MapPin,
+		TwitchLogo,
+		XLogo,
+	} from 'phosphor-svelte';
 	import { schema } from './schema.js';
 	import { onMount } from 'svelte';
+	import Heading from '$lib/components/heading';
+	import { Button } from '$lib/shadcn/components/ui/button';
+	import { Checkbox } from '$lib/shadcn/components/ui/checkbox';
+	import Switch from '$lib/shadcn/components/ui/switch/switch.svelte';
 
 	const { data } = $props();
 	const { user } = $derived(data);
@@ -35,7 +48,7 @@
 		invalidateAll: true,
 	});
 
-	const { form: formData, enhance } = form;
+	const { form: formData, enhance, submitting } = form;
 
 	//@ts-expect-error
 	let file: ReturnType<typeof fileProxy<NonNullable<typeof form>, 'avatar'>> | undefined = $state();
@@ -51,125 +64,207 @@
 	});
 </script>
 
-<form method="post" use:enhance class="flex flex-col gap-6" enctype="multipart/form-data">
-	<Form.Field {form} name="avatar">
-		<Form.Control let:attrs>
-			<Avatar.Root class="size-16">
-				{#if $formData}
-					<input
-						{...attrs}
-						type="file"
-						class="hidden max-h-8"
-						bind:files={$file}
-						bind:this={pfpEle}
-					/>
+<div class="flex max-w-3xl flex-col gap-6">
+	<Heading element="h1">Edit your details</Heading>
+	<form method="post" use:enhance class="flex flex-col gap-6" enctype="multipart/form-data">
+		<div class="flex items-center justify-center gap-4 pt-10">
+			<Heading element="h3">Appearance</Heading>
+			<div class="flex-auto border-b"></div>
+		</div>
+		<div class="flex flex-col gap-6 rounded-lg border bg-accent/20 p-6">
+			<Form.Field {form} name="avatar" class="flex items-center gap-6">
+				<Form.Control let:attrs>
+					<Avatar.Root class="size-16">
+						{#if $formData}
+							<input
+								{...attrs}
+								type="file"
+								class="hidden max-h-8"
+								bind:files={$file}
+								bind:this={pfpEle}
+							/>
+						{/if}
+						<Avatar.Image src={user.profile?.avatar} alt="" />
+					</Avatar.Root>
+					<Button
+						variant="outline"
+						onclick={() => {
+							pfpEle?.click();
+						}}
+					>
+						Upload photo
+					</Button>
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+		</div>
+		<div class="flex items-center justify-center gap-4 pt-10">
+			<Heading element="h3">Account info</Heading>
+			<div class="flex-auto border-b"></div>
+		</div>
+		<div class="flex flex-col gap-6 rounded-lg border bg-accent/20 p-6">
+			<Form.Field {form} name="username">
+				<Form.Control let:attrs>
+					<div>
+						<Form.Label>Username</Form.Label>
+						<Form.Description>Updating this will change your profile URL.</Form.Description>
+					</div>
+					<Form.FieldErrors />
+					<div class="relative w-full">
+						<Input {...attrs} class="peer pl-8" bind:value={$formData.username} />
+						<At
+							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+						/>
+					</div>
+				</Form.Control>
+			</Form.Field>
+			<Form.Field {form} name="email">
+				<Form.Control let:attrs>
+					<data>
+						<Form.Label>Email</Form.Label>
+						<Form.Description>
+							Your email will be used to send you notifications and reset your password.
+						</Form.Description>
+					</data>
+					<div class="relative w-full">
+						<Input {...attrs} class="peer pl-8" bind:value={$formData.email} />
+						<EnvelopeSimple
+							size={16}
+							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+						/>
+					</div>
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+		</div>
+		<div class="flex items-center justify-center gap-4 pt-10">
+			<Heading element="h3">About you</Heading>
+			<div class="flex-auto border-b"></div>
+		</div>
+		<div class="flex flex-col gap-6 rounded-lg border bg-accent/20 p-6">
+			<Form.Field {form} name="name">
+				<Form.Control let:attrs>
+					<data>
+						<Form.Label>Display name</Form.Label>
+						<Form.Description>We use this publicly on your profile.</Form.Description>
+					</data>
+					<div class="relative w-full">
+						<Input {...attrs} class="peer pl-8" bind:value={$formData.name} />
+						<IdentificationBadge
+							size={16}
+							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+						/>
+					</div>
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<Form.Field {form} name="location">
+				<Form.Control let:attrs>
+					<div>
+						<Form.Label>Location</Form.Label>
+						<Form.Description
+							>Where are you based? You can be as specific or general as you like.</Form.Description
+						>
+					</div>
+					<div class="relative w-full">
+						<Input {...attrs} class="peer pl-8" bind:value={$formData.location} />
+						<MapPin
+							size={16}
+							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+						/>
+					</div>
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<Form.Field {form} name="bio">
+				<Form.Control let:attrs>
+					<div>
+						<Form.Label>Bio</Form.Label>
+						<Form.Description>Tell us a little about yourself.</Form.Description>
+					</div>
+					<Textarea {...attrs} bind:value={$formData.bio} />
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<Form.Field {form} name="dream">
+				<Form.Control let:attrs>
+					<div>
+						<Form.Label>Goals</Form.Label>
+						<Form.Description
+							>What are you dreams and/or goals that you hope to achieve?</Form.Description
+						>
+					</div>
+					<Textarea {...attrs} bind:value={$formData.dream} />
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+		</div>
+		<div class="flex items-center justify-center gap-4 pt-10">
+			<Heading element="h3">Socials</Heading>
+			<div class="flex-auto border-b"></div>
+		</div>
+		<div class="grid grid-cols-1 gap-6 rounded-lg border bg-accent/20 p-6 md:grid-cols-2">
+			<Form.Field {form} name="github">
+				<Form.Control let:attrs>
+					<Form.Label>Github</Form.Label>
+					<div class="relative w-full">
+						<Input {...attrs} class="peer pl-8" bind:value={$formData.github} />
+						<GithubLogo
+							size={16}
+							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+						/>
+					</div>
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<Form.Field {form} name="twitch">
+				<Form.Control let:attrs>
+					<Form.Label>Twitch</Form.Label>
+					<div class="relative w-full">
+						<Input {...attrs} class="peer pl-8" bind:value={$formData.twitch} />
+						<TwitchLogo
+							size={16}
+							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+						/>
+					</div>
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<Form.Field {form} name="discord">
+				<Form.Control let:attrs>
+					<Form.Label>Discord</Form.Label>
+					<div class="relative w-full">
+						<Input {...attrs} class="peer pl-8" bind:value={$formData.discord} />
+						<DiscordLogo
+							size={16}
+							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+						/>
+					</div>
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+			<Form.Field {form} name="twitter">
+				<Form.Control let:attrs>
+					<Form.Label>X (Twitter)</Form.Label>
+					<div class="relative w-full">
+						<Input {...attrs} class="peer pl-8" bind:value={$formData.twitter} />
+						<XLogo
+							size={16}
+							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+						/>
+					</div>
+				</Form.Control>
+				<Form.FieldErrors />
+			</Form.Field>
+		</div>
+		<div>
+			<Form.Button disabled={$submitting}>
+				{#if $submitting}
+					Saving...
+				{:else}
+					Submit
 				{/if}
-				<button
-					type="button"
-					class="size-full"
-					onclick={() => {
-						pfpEle?.click();
-					}}
-				>
-					<Avatar.Image src={user.profile?.avatar} alt="" />
-				</button>
-			</Avatar.Root>
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="username">
-		<Form.Control let:attrs>
-			<Form.Label>Username</Form.Label>
-			<div class="relative w-full">
-				<At class="absolute left-1 top-1/2 -translate-y-1/2" />
-				<Input {...attrs} class="pl-5" bind:value={$formData.username} />
-			</div>
-		</Form.Control>
-		<Form.Description>Public username</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="name">
-		<Form.Control let:attrs>
-			<Form.Label>Name</Form.Label>
-			<Input {...attrs} bind:value={$formData.name} />
-		</Form.Control>
-		<Form.Description>Public display name</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="email">
-		<Form.Control let:attrs>
-			<Form.Label>Email</Form.Label>
-			<div class="relative w-full">
-				<Input {...attrs} class="peer pl-8" bind:value={$formData.email} />
-				<At
-					size={16}
-					class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
-				/>
-			</div>
-			<Form.Description>
-				Your email will be used to send you notifications and reset your password.
-			</Form.Description>
-		</Form.Control>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="location">
-		<Form.Control let:attrs>
-			<Form.Label>Location</Form.Label>
-			<Input {...attrs} bind:value={$formData.location} />
-		</Form.Control>
-		<Form.Description>Public display name</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="bio">
-		<Form.Control let:attrs>
-			<Form.Label>Bio</Form.Label>
-			<Textarea {...attrs} bind:value={$formData.bio} />
-		</Form.Control>
-		<Form.Description>Describe yourself, passions and goals.</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="dream">
-		<Form.Control let:attrs>
-			<Form.Label>Dream</Form.Label>
-			<Textarea {...attrs} bind:value={$formData.dream} />
-		</Form.Control>
-		<Form.Description>What are you dreams?</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
-	<!-- can probably use a tab component for these socials? -->
-	<Form.Field {form} name="github">
-		<Form.Control let:attrs>
-			<Form.Label>Github</Form.Label>
-			<Input {...attrs} bind:value={$formData.github} />
-		</Form.Control>
-		<!-- <Form.Description>Github</Form.Description> -->
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="twitch">
-		<Form.Control let:attrs>
-			<Form.Label>Twitch</Form.Label>
-			<Input {...attrs} bind:value={$formData.twitch} />
-		</Form.Control>
-		<!-- <Form.Description>Twitch</Form.Description> -->
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="discord">
-		<Form.Control let:attrs>
-			<Form.Label>Discord</Form.Label>
-			<Input {...attrs} bind:value={$formData.discord} />
-		</Form.Control>
-		<!-- <Form.Description>Discord</Form.Description> -->
-		<Form.FieldErrors />
-	</Form.Field>
-	<Form.Field {form} name="twitter">
-		<Form.Control let:attrs>
-			<Form.Label>Twitter</Form.Label>
-			<Input {...attrs} bind:value={$formData.twitter} />
-		</Form.Control>
-		<!-- <Form.Description>Twitter</Form.Description> -->
-		<Form.FieldErrors />
-	</Form.Field>
-	<div>
-		<Form.Button>Submit</Form.Button>
-	</div>
-</form>
+			</Form.Button>
+		</div>
+	</form>
+</div>

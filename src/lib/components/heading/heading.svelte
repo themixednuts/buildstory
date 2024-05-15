@@ -14,7 +14,7 @@
 	let variants = $state({
 		h1: 'scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl"',
 		h2: 'scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0',
-		h3: 'scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0',
+		h3: 'scroll-m-20 pb-2 text-2xl font-semibold tracking-tight first:mt-0',
 		h4: 'scroll-m-20 text-xl font-semibold tracking-tight',
 		h5: 'scroll-m-20 text-lg font-semibold tracking-tight',
 		h6: 'scroll-m-20 text-sm font-semibold tracking-tight uppercase',
