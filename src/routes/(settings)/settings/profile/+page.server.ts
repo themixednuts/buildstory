@@ -21,6 +21,7 @@ export const actions = {
 		if (!user?.id) return fail(400, { form });
 		if (!form.valid) return fail(400, { form });
 
+		console.log(form.data);
 		const { avatar: file } = form.data;
 
 		if (file && file instanceof File) {

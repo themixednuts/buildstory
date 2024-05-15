@@ -8,6 +8,7 @@
 	import { toast } from 'svelte-sonner';
 	import { At } from 'phosphor-svelte';
 	import { schema } from './schema.js';
+	import { onMount } from 'svelte';
 
 	const { data } = $props();
 	const { user } = $derived(data);
@@ -43,28 +44,15 @@
 
 	let pfpEle: HTMLInputElement | undefined = $state();
 
-	$effect(() => {
+	onMount(() => {
 		for (const key of Object.keys($formData)) {
-			$effect(() => {
-				//@ts-expect-error
-				$formData[key] = user.profile!.data![key];
-			});
+			//@ts-expect-error
+			$formData[key] = user.profile!.data![key];
 		}
 	});
 </script>
 
 <form method="post" use:enhance>
-	<Form.Field {form} name="username">
-		<Form.Control let:attrs>
-			<Form.Label>Username</Form.Label>
-			<div class="relative w-full">
-				<At class="absolute left-1 top-1/2 -translate-y-1/2" />
-				<Input {...attrs} class="pl-5" bind:value={$formData.username} />
-			</div>
-		</Form.Control>
-		<Form.Description>Public username</Form.Description>
-		<Form.FieldErrors />
-	</Form.Field>
 	<Avatar.Root class="size-16">
 		<Form.Field {form} name="avatar">
 			<Form.Control let:attrs>
@@ -87,10 +75,20 @@
 				pfpEle?.click();
 			}}
 		>
-			{user.profile?.data?.avatar}
 			<Avatar.Image src={user.profile?.data?.avatar} alt="" />
 		</button>
 	</Avatar.Root>
+	<Form.Field {form} name="username">
+		<Form.Control let:attrs>
+			<Form.Label>Username</Form.Label>
+			<div class="relative w-full">
+				<At class="absolute left-1 top-1/2 -translate-y-1/2" />
+				<Input {...attrs} class="pl-5" bind:value={$formData.username} />
+			</div>
+		</Form.Control>
+		<Form.Description>Public username</Form.Description>
+		<Form.FieldErrors />
+	</Form.Field>
 	<Form.Field {form} name="name">
 		<Form.Control let:attrs>
 			<Form.Label>Name</Form.Label>
