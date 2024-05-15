@@ -104,7 +104,7 @@
 			<Form.Label>Email</Form.Label>
 			<div class="relative w-full">
 				<Input {...attrs} class="peer pl-8" bind:value={$formData.email} />
-				<Mail
+				<At
 					size={16}
 					class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
 				/>
