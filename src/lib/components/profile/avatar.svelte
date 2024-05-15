@@ -1,12 +1,11 @@
 <script lang="ts">
+	import type { Tables } from '$lib/db/types';
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
-	import type { HTMLAnchorAttributes } from 'svelte/elements';
-	interface Props {
-		src?: HTMLAnchorAttributes['href'];
-	}
-	let { src }: Props = $props();
+	import { getContext } from 'svelte';
+
+	const profile = getContext<Tables<'profiles'>>('profile');
 </script>
 
 <Avatar.Root>
-	<Avatar.Image {src} />
+	<Avatar.Image src={profile.avatar} />
 </Avatar.Root>

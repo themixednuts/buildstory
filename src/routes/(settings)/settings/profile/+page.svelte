@@ -9,7 +9,7 @@
 	import { At } from 'phosphor-svelte';
 
 	const { data } = $props();
-	const { user } = $derived(data);
+	const { user, supabase } = $derived(data);
 
 	const form = superForm(data.form, {
 		validators: zodClient(schema),

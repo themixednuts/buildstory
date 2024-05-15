@@ -1,7 +1,5 @@
-export const load = (async ({ locals }) => {
-    // const { session, user } = await locals.safeGetSession()
+export const load = async ({ locals }) => {
+	// const { session, user } = await locals.safeGetSession()
 
-    return {
-
-    }
-})
+	return {};
+};
