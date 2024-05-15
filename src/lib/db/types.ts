@@ -36,14 +36,17 @@ export type Database = {
     Tables: {
       badges: {
         Row: {
+          completed_projects: number | null
           id: number
           name: string
         }
         Insert: {
+          completed_projects?: number | null
           id?: number
           name: string
         }
         Update: {
+          completed_projects?: number | null
           id?: number
           name?: string
         }
@@ -303,36 +306,33 @@ export type Database = {
           },
         ]
       }
-      posts_salutes: {
+      posts_upvotes: {
         Row: {
           created_at: string
-          id: string
           post_id: string
-          profile_id: string
+          upvoted_by: string
         }
         Insert: {
           created_at?: string
-          id?: string
           post_id: string
-          profile_id: string
+          upvoted_by: string
         }
         Update: {
           created_at?: string
-          id?: string
           post_id?: string
-          profile_id?: string
+          upvoted_by?: string
         }
         Relationships: [
           {
-            foreignKeyName: "posts_salutes_post_id_fkey"
+            foreignKeyName: "posts_upvotes_post_id_fkey"
             columns: ["post_id"]
             isOneToOne: false
             referencedRelation: "posts"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "posts_salutes_profile_id_fkey"
-            columns: ["profile_id"]
+            foreignKeyName: "posts_upvotes_upvoted_by_fkey"
+            columns: ["upvoted_by"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -341,7 +341,7 @@ export type Database = {
       }
       profiles: {
         Row: {
-          avatar: string
+          avatar: string | null
           bio: string | null
           created_at: string
           discord: string | null
@@ -358,7 +358,7 @@ export type Database = {
           username: string
         }
         Insert: {
-          avatar: string
+          avatar?: string | null
           bio?: string | null
           created_at?: string
           discord?: string | null
@@ -375,7 +375,7 @@ export type Database = {
           username: string
         }
         Update: {
-          avatar?: string
+          avatar?: string | null
           bio?: string | null
           created_at?: string
           discord?: string | null
@@ -470,6 +470,39 @@ export type Database = {
           },
         ]
       }
+      profiles_upvotes: {
+        Row: {
+          created_at: string
+          profile_id: string
+          upvoted_by: string
+        }
+        Insert: {
+          created_at?: string
+          profile_id: string
+          upvoted_by: string
+        }
+        Update: {
+          created_at?: string
+          profile_id?: string
+          upvoted_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_upvotes_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_upvotes_upvoted_by_fkey"
+            columns: ["upvoted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       projects: {
         Row: {
           created_at: string
@@ -477,7 +510,7 @@ export type Database = {
           id: string
           logo: string | null
           profile_id: string
-          state: number
+          state_id: number
           title: string
           updated_at: string
           url: string | null
@@ -488,7 +521,7 @@ export type Database = {
           id?: string
           logo?: string | null
           profile_id: string
-          state: number
+          state_id?: number
           title: string
           updated_at?: string
           url?: string | null
@@ -499,7 +532,7 @@ export type Database = {
           id?: string
           logo?: string | null
           profile_id?: string
-          state?: number
+          state_id?: number
           title?: string
           updated_at?: string
           url?: string | null
@@ -513,46 +546,43 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "projects_state_fkey"
-            columns: ["state"]
+            foreignKeyName: "projects_state_id_fkey"
+            columns: ["state_id"]
             isOneToOne: false
             referencedRelation: "states"
             referencedColumns: ["id"]
           },
         ]
       }
-      projects_salutes: {
+      projects_upvotes: {
         Row: {
           created_at: string
-          id: string
-          profile_id: string
           project_id: string
+          upvoted_by: string
         }
         Insert: {
           created_at?: string
-          id?: string
-          profile_id: string
           project_id: string
+          upvoted_by: string
         }
         Update: {
           created_at?: string
-          id?: string
-          profile_id?: string
           project_id?: string
+          upvoted_by?: string
         }
         Relationships: [
           {
-            foreignKeyName: "projects_salutes_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "projects_salutes_project_id_fkey"
+            foreignKeyName: "projects_upvotes_project_id_fkey"
             columns: ["project_id"]
             isOneToOne: false
             referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_upvotes_upvoted_by_fkey"
+            columns: ["upvoted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]

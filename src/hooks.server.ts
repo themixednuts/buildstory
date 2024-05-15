@@ -2,7 +2,7 @@ import {
 	PUBLIC_SUPABASE_URL,
 	PUBLIC_SUPABASE_ANON_KEY,
 	PUBLIC_SUPABASE_DEV_URL,
-	PUBLIC_SUPABASE_DEV_ANON
+	PUBLIC_SUPABASE_DEV_ANON,
 } from '$env/static/public';
 import { createServerClient } from '@supabase/ssr';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
@@ -31,8 +31,8 @@ const supabase: Handle = async ({ event, resolve }) => {
 			},
 			remove: (key, options) => {
 				event.cookies.delete(key, { ...options, path: '/' });
-			}
-		}
+			},
+		},
 	});
 
 	/**
@@ -42,7 +42,7 @@ const supabase: Handle = async ({ event, resolve }) => {
 	 */
 	event.locals.safeGetSession = async () => {
 		const {
-			data: { session }
+			data: { session },
 		} = await event.locals.supabase.auth.getSession();
 		if (!session) {
 			return { session: null, user: null };
@@ -50,7 +50,7 @@ const supabase: Handle = async ({ event, resolve }) => {
 
 		const {
 			data: { user },
-			error
+			error,
 		} = await event.locals.supabase.auth.getUser();
 		if (error) {
 			// JWT validation has failed
@@ -67,7 +67,7 @@ const supabase: Handle = async ({ event, resolve }) => {
 			 * headers, so we need to tell SvelteKit to pass it through.
 			 */
 			return name === 'content-range' || name === 'x-supabase-api-version';
-		}
+		},
 	});
 };
 
@@ -93,6 +93,6 @@ export const handleError: HandleServerError = async ({ error, event, status, mes
 
 	return {
 		message: 'Whoops!',
-		errorId
+		errorId,
 	};
 };

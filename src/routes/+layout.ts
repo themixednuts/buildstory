@@ -4,7 +4,7 @@ import {
 	PUBLIC_SUPABASE_ANON_KEY,
 	PUBLIC_SUPABASE_URL,
 	PUBLIC_SUPABASE_DEV_ANON,
-	PUBLIC_SUPABASE_DEV_URL
+	PUBLIC_SUPABASE_DEV_URL,
 } from '$env/static/public';
 
 import { getProfileById } from '$lib/db/helpers.js';
@@ -20,24 +20,24 @@ export const load = async ({ fetch, data, depends }) => {
 	const supabase = isBrowser()
 		? createBrowserClient<Database>(_URL, _ANON, {
 				global: {
-					fetch
+					fetch,
 				},
 				cookies: {
 					get(key) {
 						const cookie = parse(document.cookie);
 						return cookie[key];
-					}
-				}
+					},
+				},
 			})
 		: createServerClient<Database>(_URL, _ANON, {
 				global: {
-					fetch
+					fetch,
 				},
 				cookies: {
 					get() {
 						return JSON.stringify(data.session);
-					}
-				}
+					},
+				},
 			});
 
 	/**
@@ -46,19 +46,21 @@ export const load = async ({ fetch, data, depends }) => {
 	 * safely checked the session using `safeGetSession`.
 	 */
 	const {
-		data: { session }
+		data: { session },
 	} = await supabase.auth.getSession();
 
 	const {
-		data: { user }
+		data: { user },
 	} = await supabase.auth.getUser();
+
+	const { data: profile } = await getProfileById(supabase, user?.id);
 
 	return {
 		supabase,
 		session,
 		user: {
 			...user,
-			profile: session?.user?.id ? await getProfileById(supabase, session.user.id) : null
-		}
+			profile,
+		},
 	};
 };

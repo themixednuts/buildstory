@@ -44,9 +44,9 @@
 	let pfpEle: HTMLInputElement | undefined = $state();
 
 	onMount(() => {
-		for (const key of Object.keys($formData)) {
+		for (const key of Object.keys($formData) as Array<keyof typeof $formData>) {
 			//@ts-expect-error
-			$formData[key] = user.profile!.data![key];
+			$formData[key] = user.profile?.[key];
 		}
 	});
 </script>
@@ -71,7 +71,7 @@
 						pfpEle?.click();
 					}}
 				>
-					<Avatar.Image src={user.profile?.data?.avatar} alt="" />
+					<Avatar.Image src={user.profile?.avatar} alt="" />
 				</button>
 			</Avatar.Root>
 		</Form.Control>
