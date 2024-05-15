@@ -8,6 +8,7 @@ export const load = async ({ locals: { supabase } }) => {
 		form: await superValidate(zod(schema)),
 	};
 };
+
 export const actions = {
 	default: async (event) => {
 		const {

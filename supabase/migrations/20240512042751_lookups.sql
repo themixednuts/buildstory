@@ -7,7 +7,8 @@ CREATE POLICY "Roles are viewable by everyone." ON roles FOR
 SELECT USING (TRUE);
 CREATE TABLE "badges" (
     "id" serial PRIMARY KEY NOT NULL,
-    "name" text NOT NULL
+    "name" text NOT NULL,
+    "completed_projects" INT
 );
 ALTER TABLE badges ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Badges are viewable by everyone." ON badges FOR

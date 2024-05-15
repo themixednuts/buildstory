@@ -50,27 +50,27 @@ CREATE TRIGGER prevent_duplicate_post BEFORE
 INSERT ON posts FOR EACH ROW EXECUTE FUNCTION check_recent_post();
 CREATE TRIGGER posts_updated BEFORE
 UPDATE ON posts FOR EACH ROW EXECUTE PROCEDURE moddatetime (updated_at);
-CREATE TABLE "posts_salutes" (
-    "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
-    "profile_id" uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+CREATE TABLE "posts_upvotes" (
+    "upvoted_by" uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
     "post_id" uuid NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
-    "created_at" timestamp NOT NULL DEFAULT (now())
+    "created_at" timestamp NOT NULL DEFAULT (now()),
+    PRIMARY KEY ("upvoted_by", "post_id")
 );
-CREATE INDEX ON posts_salutes (profile_id);
-CREATE INDEX ON posts_salutes (post_id);
-ALTER TABLE posts_salutes ENABLE ROW LEVEL SECURITY;
+CREATE INDEX ON posts_upvotes (upvoted_by);
+CREATE INDEX ON posts_upvotes (post_id);
+ALTER TABLE posts_upvotes ENABLE ROW LEVEL SECURITY;
 ALTER PUBLICATION supabase_realtime
-ADD TABLE posts_salutes;
-CREATE POLICY "Post salutes are viewable by everyone." ON posts_salutes FOR
+ADD TABLE posts_upvotes;
+CREATE POLICY "Post upvotes are viewable by everyone." ON posts_upvotes FOR
 SELECT USING (TRUE);
-CREATE POLICY "Users can insert their own posts_salutes." ON posts_salutes FOR
+CREATE POLICY "Users can insert their own posts_upvotes." ON posts_upvotes FOR
 INSERT WITH CHECK (
         (
             SELECT auth.uid ()
-        ) = profile_id
+        ) = upvoted_by
     );
-CREATE POLICY "Users can delete their own posts_salutes." ON posts_salutes FOR DELETE USING (
+CREATE POLICY "Users can delete their own posts_upvotes." ON posts_upvotes FOR DELETE USING (
     (
         SELECT auth.uid ()
-    ) = profile_id
+    ) = upvoted_by
 );

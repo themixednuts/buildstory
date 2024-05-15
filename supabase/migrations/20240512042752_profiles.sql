@@ -1,15 +1,15 @@
 CREATE TABLE "profiles" (
     "id" UUID PRIMARY KEY NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
-    "username" varchar(15) NOT NULL,
+    "username" varchar(15) NOT NULL UNIQUE,
     "name" varchar(35),
-    "email" TEXT NOT NULL,
+    "email" TEXT NOT NULL UNIQUE,
     "bio" TEXT,
     "dream" TEXT,
     "twitter" TEXT UNIQUE,
     "github" TEXT UNIQUE,
     "twitch" TEXT UNIQUE,
     "discord" TEXT UNIQUE,
-    "avatar" TEXT NOT NULL,
+    "avatar" TEXT,
     "location" TEXT,
     "muted" bool DEFAULT false,
     "updated_at" timestamp NOT NULL DEFAULT (now ()),
@@ -35,13 +35,26 @@ CREATE POLICY "Users can delete own profile." ON profiles FOR DELETE USING (
         SELECT auth.uid()
     ) = id
 );
-CREATE OR REPLACE FUNCTION public.handle_new_user() RETURNS TRIGGER AS $$ BEGIN
+CREATE OR REPLACE FUNCTION public.handle_new_user() RETURNS TRIGGER AS $$ BEGIN WITH numbered_users AS (
+        SELECT *,
+            ROW_NUMBER() OVER () AS row_num
+        FROM auth.users
+    )
 INSERT INTO public.profiles(id, email, avatar, username, github)
 VALUES(
         NEW.id,
         NEW.email,
         NEW.raw_user_meta_data->>'avatar_url',
-        NEW.raw_user_meta_data->>'user_name',
+        (
+            SELECT COALESCE(
+                    NEW.raw_user_meta_data->>'user_name',
+                    'user' || (
+                        SELECT row_num
+                        FROM numbered_users
+                        WHERE id = NEW.id
+                    )
+                )
+        ),
         NEW.raw_user_meta_data->>'user_name'
     );
 RETURN new;
@@ -92,3 +105,33 @@ CREATE INDEX ON profiles_points(profile_id);
 ALTER TABLE profiles_points ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Profile points are viewable by everyone." ON profiles_points FOR
 SELECT USING (TRUE);
+CREATE TABLE "profiles_upvotes" (
+    "upvoted_by" uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    "profile_id" uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    "created_at" timestamp NOT NULL DEFAULT (now()),
+    PRIMARY KEY ("upvoted_by", "profile_id")
+);
+CREATE INDEX ON "profiles_upvotes" ("upvoted_by");
+CREATE INDEX ON "profiles_upvotes" ("profile_id");
+ALTER TABLE profiles_upvotes ENABLE ROW LEVEL SECURITY;
+ALTER PUBLICATION supabase_realtime
+ADD TABLE profiles_upvotes;
+CREATE POLICY "Profile upvotes are viewable by everyone." ON profiles_upvotes FOR
+SELECT USING (TRUE);
+CREATE POLICY "Users can insert their own profiles_upvotes." ON profiles_upvotes FOR
+INSERT WITH CHECK (
+        (
+            SELECT auth.uid ()
+        ) = upvoted_by
+    );
+CREATE POLICY "Users can update their own profiles_upvotes." ON profiles_upvotes FOR
+UPDATE USING (
+        (
+            SELECT auth.uid ()
+        ) = upvoted_by
+    );
+CREATE POLICY "Users can delete their own profiles_upvotes." ON profiles_upvotes FOR DELETE USING (
+    (
+        SELECT auth.uid ()
+    ) = upvoted_by
+);
