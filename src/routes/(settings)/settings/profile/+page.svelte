@@ -30,10 +30,10 @@
 		},
 		onError: async ({ result }) => {
 			toast.error(`${result.type} ${result.status}`, {
-				description: result.error.message
+				description: result.error.message,
 			});
 		},
-		invalidateAll: true
+		invalidateAll: true,
 	});
 
 	const { form: formData, enhance } = form;
