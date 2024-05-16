@@ -22,6 +22,7 @@
 	import { onMount } from 'svelte';
 	import Heading from '$lib/components/heading';
 	import { Button } from '$lib/shadcn/components/ui/button';
+	import { debounce } from '$lib/utils.svelte.js';
 
 	const { data } = $props();
 	const { user } = $derived(data);
@@ -52,11 +53,16 @@
 
 	const { form: formData, enhance, submitting } = form;
 
-	//@ts-expect-error
-	let file: ReturnType<typeof fileProxy<NonNullable<typeof form>, 'avatar'>> | undefined = $state();
+	let file: ReturnType<typeof fileProxy> | undefined = $state();
 	if (form) file = fileProxy(form, 'avatar');
 
-	let pfpEle: HTMLInputElement | undefined = $state();
+	let input: HTMLInputElement | undefined = $state();
+
+	let checking = $state(false);
+	const debounceUsername = debounce(
+		async (e: Event & { currentTarget: HTMLInputElement }) => {},
+		500
+	);
 
 	onMount(() => {
 		for (const key of Object.keys($formData) as Array<keyof typeof $formData>) {
@@ -83,7 +89,7 @@
 								type="file"
 								class="hidden max-h-8"
 								bind:files={$file}
-								bind:this={pfpEle}
+								bind:this={input}
 							/>
 						{/if}
 						<Avatar.Image src={user.profile?.avatar} alt="" />
@@ -91,7 +97,7 @@
 					<Button
 						variant="outline"
 						onclick={() => {
-							pfpEle?.click();
+							input?.click();
 						}}
 					>
 						Upload photo
@@ -138,7 +144,7 @@
 				</Form.Control>
 				<Form.Description class="pt-1">
 					<a
-						class="hover:text-native-foreground inline-flex items-center gap-2 text-sm underline"
+						class="inline-flex items-center gap-2 text-sm underline hover:text-native-foreground"
 						href="/update-email"
 					>
 						Need to update your email?
