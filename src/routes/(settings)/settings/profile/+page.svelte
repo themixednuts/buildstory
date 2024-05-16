@@ -23,9 +23,10 @@
 	import Heading from '$lib/components/heading';
 	import { Button } from '$lib/shadcn/components/ui/button';
 	import { debounce } from '$lib/utils.svelte.js';
+	import { searchForProfileByUsername } from '$lib/db/helpers.js';
 
 	const { data } = $props();
-	const { user } = $derived(data);
+	const { user, supabase } = $derived(data);
 
 	const form = superForm(data.form, {
 		validators: zodClient(schema),
@@ -51,18 +52,30 @@
 		invalidateAll: true,
 	});
 
-	const { form: formData, enhance, submitting } = form;
+	const { form: formData, enhance, submitting, errors } = form;
 
 	let file: ReturnType<typeof fileProxy> | undefined = $state();
 	if (form) file = fileProxy(form, 'avatar');
 
 	let input: HTMLInputElement | undefined = $state();
 
-	let checking = $state(false);
-	const debounceUsername = debounce(
-		async (e: Event & { currentTarget: HTMLInputElement }) => {},
-		500
-	);
+	let checking = $state({
+		username: false,
+		// github: false,
+		// discord: false,
+		// twitch: false,
+		// twitter: false,
+	});
+
+	const debounceUsername = debounce(async (e: Event & { currentTarget: HTMLInputElement }) => {
+		checking.username = true;
+		const { data, error } = await searchForProfileByUsername(supabase, e.currentTarget.value);
+		if (error) console.log(error);
+		else {
+			checking.username = false;
+			if (data.length) $errors.username = ['Username is taken'];
+		}
+	}, 500);
 
 	onMount(() => {
 		for (const key of Object.keys($formData) as Array<keyof typeof $formData>) {
@@ -119,7 +132,12 @@
 					</div>
 					<Form.FieldErrors />
 					<div class="relative w-full">
-						<Input {...attrs} class="peer pl-8" bind:value={$formData.username} />
+						<Input
+							{...attrs}
+							class="peer pl-8"
+							bind:value={$formData.username}
+							oninput={debounceUsername}
+						/>
 						<At
 							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
 						/>

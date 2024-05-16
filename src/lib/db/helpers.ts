@@ -29,6 +29,16 @@ export async function searchForProfileByUsername(
 		.eq('username', username ?? '');
 }
 
+export async function searchForProfileByEmail(
+	supabase: SupabaseClient<Database>,
+	email: string | undefined
+) {
+	return supabase
+		.from('profiles')
+		.select()
+		.eq('email', email ?? '');
+}
+
 export async function searchForProfileByGithubUsername(
 	supabase: SupabaseClient<Database>,
 	username: string | undefined
