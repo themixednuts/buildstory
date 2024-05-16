@@ -2,7 +2,7 @@ CREATE TABLE "chapters" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "project_id" uuid NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     "order" int NOT NULL,
-    "name" text NOT NULL,
+    "name" text NOT NULL CHECK(name <> ''),
     "state" INTEGER NOT NULL REFERENCES states(id),
     "completed_at" timestamp,
     "updated_at" timestamp NOT NULL DEFAULT (now()),

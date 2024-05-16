@@ -37,7 +37,9 @@
 				}
 				toast.success(form.message);
 			} else {
-				toast.error(form.message);
+				toast.error('Invalid form!', {
+					description: form.message,
+				});
 			}
 		},
 		onError: async ({ result }) => {

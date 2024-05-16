@@ -1,7 +1,7 @@
 CREATE TABLE "events" (
   "id" serial PRIMARY KEY NOT NULL,
   "project_id" uuid NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
-  "title" text NOT NULL,
+  "title" text NOT NULL CHECK(title <> ''),
   "start_date" timestamptz NOT NULL,
   "end_date" timestamptz NOT NULL,
   "updated_at" timestamp NOT NULL DEFAULT (now()),

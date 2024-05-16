@@ -1,7 +1,7 @@
 CREATE TABLE "posts" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "profile_id" uuid NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-    "title" varchar(25) NOT NULL,
+    "title" varchar(25) NOT NULL CHECK(title <> ''),
     "body" text,
     "updated_at" timestamp NOT NULL DEFAULT (now ()),
     "created_at" timestamp NOT NULL DEFAULT (now())

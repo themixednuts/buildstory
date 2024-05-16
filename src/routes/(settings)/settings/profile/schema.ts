@@ -21,5 +21,7 @@ export const schema = profilesInsertSchema.omit({ id: true }).extend({
 		.or(z.string())
 		.nullable()
 		.optional(),
+	email: z.string().email(),
+	username: z.string().min(3),
 });
 export type Schema = typeof schema;

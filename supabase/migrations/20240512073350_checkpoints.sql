@@ -2,7 +2,7 @@ CREATE TABLE "checkpoints" (
     "id" uuid PRIMARY KEY NOT NULL DEFAULT (gen_random_uuid()),
     "chapter_id" uuid NOT NULL REFERENCES chapters(id) ON DELETE CASCADE,
     "order" int NOT NULL,
-    "name" text NOT NULL,
+    "name" text NOT NULL CHECK(name <> ''),
     "state" INTEGER NOT NULL REFERENCES states(id),
     "completed_at" timestamp,
     "updated_at" timestamp NOT NULL DEFAULT (now()),
