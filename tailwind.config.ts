@@ -1,6 +1,8 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
 import type { Config } from 'tailwindcss';
 
+const maxWidth = '70rem';
+
 const config: Config = {
 	darkMode: ['class'],
 	content: ['./src/**/*.{html,js,svelte,ts}'],
@@ -8,9 +10,13 @@ const config: Config = {
 	theme: {
 		container: {
 			center: true,
-			padding: '2rem',
+			padding: '1rem',
 			screens: {
-				'2xl': '1400px',
+				sm: maxWidth,
+				md: maxWidth,
+				lg: maxWidth,
+				xl: maxWidth,
+				'2xl': maxWidth,
 			},
 		},
 		extend: {

@@ -3,7 +3,7 @@
 	import * as DropdownMenu from '$lib/shadcn/components/ui/dropdown-menu';
 	import { Button } from '$lib/shadcn/components/ui/button';
 	import { page } from '$app/stores';
-	import type { PageData } from '../../../routes/(app)/$types';
+	import type { PageData } from '../../../routes/(_default)/$types';
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
 
 	const { profile } = $derived($page.data.user) as PageData['user'];
