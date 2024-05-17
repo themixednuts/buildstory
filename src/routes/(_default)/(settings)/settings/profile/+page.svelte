@@ -119,7 +119,7 @@
 	});
 </script>
 
-<div class="flex max-w-3xl flex-col gap-6">
+<div class="flex flex-col gap-6 p-10">
 	<Heading element="h1">Edit your details</Heading>
 	<form method="post" use:enhance class="flex flex-col gap-6" enctype="multipart/form-data">
 		<div class="flex items-center justify-center gap-4 pt-10">
