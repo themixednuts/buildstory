@@ -111,233 +111,245 @@
 		}
 	}, 500);
 
-	onMount(() => {
+	const reset = () => {
 		for (const key of Object.keys($formData) as Array<keyof typeof $formData>) {
 			//@ts-expect-error
 			$formData[key] = user.profile?.[key];
 		}
-	});
+	};
+
+	onMount(() => reset());
 </script>
 
-<div class="flex flex-col gap-6 p-10">
-	<Heading element="h1">Edit your details</Heading>
+<div class="flex flex-col">
+	<div class="flex flex-col items-start justify-end gap-2 border-b bg-accent/50 px-6 pb-4 pt-20">
+		<Heading element="h1">Edit your details</Heading>
+		<Heading element="h2" variant="h5" class="font-normal opacity-50"
+			>Make changes to your profile here.</Heading
+		>
+	</div>
 	<form method="post" use:enhance class="flex flex-col gap-6" enctype="multipart/form-data">
-		<div class="flex items-center justify-center gap-4 pt-10">
-			<Heading element="h3">Appearance</Heading>
-			<div class="flex-auto border-b"></div>
-		</div>
-		<div class="flex flex-col gap-6 rounded-lg border bg-accent/20 p-6">
-			<Form.Field {form} name="avatar" class="flex items-center gap-6">
-				<Form.Control let:attrs>
-					<Avatar.Root class="size-16">
-						{#if $formData}
-							<input
-								{...attrs}
-								type="file"
-								class="hidden max-h-8"
-								bind:files={$file}
-								bind:this={input}
-							/>
-						{/if}
-						<Avatar.Image src={user.profile?.avatar} alt="" />
-					</Avatar.Root>
-					<Button
-						variant="outline"
-						onclick={() => {
-							input?.click();
-						}}
-					>
-						Upload photo
-					</Button>
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-		</div>
-		<div class="flex items-center justify-center gap-4 pt-10">
-			<Heading element="h3">Account info</Heading>
-			<div class="flex-auto border-b"></div>
-		</div>
-		<div class="flex flex-col gap-6 rounded-lg border bg-accent/20 p-6">
-			<Form.Field {form} name="username">
-				<Form.Control let:attrs>
-					<div>
-						<Form.Label>Username</Form.Label>
-						<Form.Description>Updating this will change your profile URL.</Form.Description>
-					</div>
+		<div class="px-2 md:px-10">
+			<div class="flex items-center justify-center gap-4 pt-10">
+				<Heading element="h3">Appearance</Heading>
+				<div class="flex-auto border-b"></div>
+			</div>
+			<div class="flex flex-col gap-6 rounded-lg border bg-accent/20 p-6">
+				<Form.Field {form} name="avatar" class="flex items-center gap-6">
+					<Form.Control let:attrs>
+						<Avatar.Root class="size-16">
+							{#if $formData}
+								<input
+									{...attrs}
+									type="file"
+									class="hidden max-h-8"
+									bind:files={$file}
+									bind:this={input}
+								/>
+							{/if}
+							<Avatar.Image src={user.profile?.avatar} alt="" />
+						</Avatar.Root>
+						<Button
+							variant="outline"
+							onclick={() => {
+								input?.click();
+							}}
+						>
+							Upload photo
+						</Button>
+					</Form.Control>
 					<Form.FieldErrors />
-					<div class="relative w-full">
-						<Input
-							{...attrs}
-							class="peer pl-8"
-							bind:value={$formData.username}
-							oninput={debounceUsername}
-						/>
-						<At
-							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
-						/>
-					</div>
-				</Form.Control>
-			</Form.Field>
-			<Form.Field {form} name="email">
-				<Form.Control let:attrs>
-					<data>
-						<Form.Label>Email</Form.Label>
-						<Form.Description>
-							Your email will be used to send you notifications and verifications.
-						</Form.Description>
-					</data>
-					<div class="relative w-full">
-						<Input {...attrs} class="peer pl-8" bind:value={$formData.email} readonly />
-						<EnvelopeSimple
-							size={16}
-							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
-						/>
-					</div>
-				</Form.Control>
-				<Form.Description class="pt-1">
-					<a
-						class="inline-flex items-center gap-2 text-sm underline hover:text-native-foreground"
-						href="/update-email"
-					>
-						Need to update your email?
-						<ArrowSquareOut size={16} />
-					</a>
-				</Form.Description>
-				<Form.FieldErrors />
-			</Form.Field>
-		</div>
-		<div class="flex items-center justify-center gap-4 pt-10">
-			<Heading element="h3">About you</Heading>
-			<div class="flex-auto border-b"></div>
-		</div>
-		<div class="flex flex-col gap-6 rounded-lg border bg-accent/20 p-6">
-			<Form.Field {form} name="name">
-				<Form.Control let:attrs>
-					<data>
-						<Form.Label>Display name</Form.Label>
-						<Form.Description>We use this publicly on your profile.</Form.Description>
-					</data>
-					<div class="relative w-full">
-						<Input {...attrs} class="peer pl-8" bind:value={$formData.name} />
-						<IdentificationBadge
-							size={16}
-							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
-						/>
-					</div>
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-			<Form.Field {form} name="location">
-				<Form.Control let:attrs>
-					<div>
-						<Form.Label>Location</Form.Label>
-						<Form.Description
-							>Where are you based? You can be as specific or general as you like.</Form.Description
+				</Form.Field>
+			</div>
+			<div class="flex items-center justify-center gap-4 pt-10">
+				<Heading element="h3">Account info</Heading>
+				<div class="flex-auto border-b"></div>
+			</div>
+			<div class="flex flex-col gap-6 rounded-lg border bg-accent/20 p-6">
+				<Form.Field {form} name="username">
+					<Form.Control let:attrs>
+						<div>
+							<Form.Label>Username</Form.Label>
+							<Form.Description>Updating this will change your profile URL.</Form.Description>
+						</div>
+						<Form.FieldErrors />
+						<div class="relative w-full">
+							<Input
+								{...attrs}
+								class="peer pl-8"
+								bind:value={$formData.username}
+								oninput={debounceUsername}
+							/>
+							<At
+								class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+							/>
+						</div>
+					</Form.Control>
+				</Form.Field>
+				<Form.Field {form} name="email">
+					<Form.Control let:attrs>
+						<data>
+							<Form.Label>Email</Form.Label>
+							<Form.Description>
+								Your email will be used to send you notifications and verifications.
+							</Form.Description>
+						</data>
+						<div class="relative w-full">
+							<Input {...attrs} class="peer pl-8" bind:value={$formData.email} readonly />
+							<EnvelopeSimple
+								size={16}
+								class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+							/>
+						</div>
+					</Form.Control>
+					<Form.Description class="pt-1">
+						<a
+							class="inline-flex items-center gap-2 text-sm underline hover:text-native-foreground"
+							href="/update-email"
 						>
-					</div>
-					<div class="relative w-full">
-						<Input {...attrs} class="peer pl-8" bind:value={$formData.location} />
-						<MapPin
-							size={16}
-							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
-						/>
-					</div>
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-			<Form.Field {form} name="bio">
-				<Form.Control let:attrs>
-					<div>
-						<Form.Label>Bio</Form.Label>
-						<Form.Description>Tell us a little about yourself.</Form.Description>
-					</div>
-					<Textarea {...attrs} bind:value={$formData.bio} />
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-			<Form.Field {form} name="dream">
-				<Form.Control let:attrs>
-					<div>
-						<Form.Label>Goals</Form.Label>
-						<Form.Description
-							>What are you dreams and/or goals that you hope to achieve?</Form.Description
-						>
-					</div>
-					<Textarea {...attrs} bind:value={$formData.dream} />
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-		</div>
-		<div class="flex items-center justify-center gap-4 pt-10">
-			<Heading element="h3">Socials</Heading>
-			<div class="flex-auto border-b"></div>
-		</div>
-		<div class="grid grid-cols-1 gap-6 rounded-lg border bg-accent/20 p-6 md:grid-cols-2">
-			{#each providers as { label, Logo, value, provider }}
-				<div class="">
-					<Label>{label}</Label>
-					<div class="relative w-full">
-						{#if value}
-							<Badge variant="outline" class="gap-2 py-2">
-								<Logo size={16} class="" />
-								{value}
-							</Badge>
-							<Button
-								variant="destructive"
-								size="sm"
-								onclick={async () => {
-									const iden = user.identities?.find((identity) => identity.provider === provider);
-									if (!iden) return;
-									const { error } = await supabase.auth.unlinkIdentity(iden);
-									if (error)
-										toast.error(`Can't unlink ${label}`, {
-											description: error.message,
-										});
-									else {
-										toast.success(`${label} unlinked`);
-										invalidateAll();
-									}
-								}}
+							Need to update your email?
+							<ArrowSquareOut size={16} />
+						</a>
+					</Form.Description>
+					<Form.FieldErrors />
+				</Form.Field>
+			</div>
+			<div class="flex items-center justify-center gap-4 pt-10">
+				<Heading element="h3">About you</Heading>
+				<div class="flex-auto border-b"></div>
+			</div>
+			<div class="flex flex-col gap-6 rounded-lg border bg-accent/20 p-6">
+				<Form.Field {form} name="name">
+					<Form.Control let:attrs>
+						<data>
+							<Form.Label>Display name</Form.Label>
+							<Form.Description>We use this publicly on your profile.</Form.Description>
+						</data>
+						<div class="relative w-full">
+							<Input {...attrs} class="peer pl-8" bind:value={$formData.name} />
+							<IdentificationBadge
+								size={16}
+								class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+							/>
+						</div>
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="location">
+					<Form.Control let:attrs>
+						<div>
+							<Form.Label>Location</Form.Label>
+							<Form.Description
+								>Where are you based? You can be as specific or general as you like.</Form.Description
 							>
-								Unlink
-							</Button>
-						{:else}
-							<Button
-								variant="outline"
-								class="gap-2"
-								size="sm"
-								onclick={async () => {
-									const { error } = await supabase.auth.linkIdentity({
-										provider,
-										options: {
-											redirectTo: `${$page.url.origin}/settings/profile`,
-										},
-									});
-									if (error)
-										toast.error(`Issue linking ${label} to your profile`, {
-											description: error.message,
-										});
-									else {
-										// toast.success(`Linked ${provider} to your profile!`);
-									}
-								}}
+						</div>
+						<div class="relative w-full">
+							<Input {...attrs} class="peer pl-8" bind:value={$formData.location} />
+							<MapPin
+								size={16}
+								class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
+							/>
+						</div>
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="bio">
+					<Form.Control let:attrs>
+						<div>
+							<Form.Label>Bio</Form.Label>
+							<Form.Description>Tell us a little about yourself.</Form.Description>
+						</div>
+						<Textarea {...attrs} bind:value={$formData.bio} />
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field {form} name="dream">
+					<Form.Control let:attrs>
+						<div>
+							<Form.Label>Goals</Form.Label>
+							<Form.Description
+								>What are you dreams and/or goals that you hope to achieve?</Form.Description
 							>
-								<Logo size={16} class="" />
-								Link
-							</Button>
-						{/if}
+						</div>
+						<Textarea {...attrs} bind:value={$formData.dream} />
+					</Form.Control>
+					<Form.FieldErrors />
+				</Form.Field>
+			</div>
+			<div class="flex items-center justify-center gap-4 pt-10">
+				<Heading element="h3">Socials</Heading>
+				<div class="flex-auto border-b"></div>
+			</div>
+			<div class="grid grid-cols-1 gap-6 rounded-lg border bg-accent/20 p-6 md:grid-cols-2">
+				{#each providers as { label, Logo, value, provider }}
+					<div class="">
+						<Label>{label}</Label>
+						<div class="relative w-full">
+							{#if value}
+								<Badge variant="outline" class="gap-2 py-2">
+									<Logo size={16} class="" />
+									{value}
+								</Badge>
+								<Button
+									variant="destructive"
+									size="sm"
+									onclick={async () => {
+										const iden = user.identities?.find(
+											(identity) => identity.provider === provider
+										);
+										if (!iden) return;
+										const { error } = await supabase.auth.unlinkIdentity(iden);
+										if (error)
+											toast.error(`Can't unlink ${label}`, {
+												description: error.message,
+											});
+										else {
+											toast.success(`${label} unlinked`);
+											invalidateAll();
+										}
+									}}
+								>
+									Unlink
+								</Button>
+							{:else}
+								<Button
+									variant="outline"
+									class="gap-2"
+									size="sm"
+									onclick={async () => {
+										const { error } = await supabase.auth.linkIdentity({
+											provider,
+											options: {
+												redirectTo: `${$page.url.origin}/settings/profile`,
+											},
+										});
+										if (error)
+											toast.error(`Issue linking ${label} to your profile`, {
+												description: error.message,
+											});
+										else {
+											// toast.success(`Linked ${provider} to your profile!`);
+										}
+									}}
+								>
+									<Logo size={16} class="" />
+									Link
+								</Button>
+							{/if}
+						</div>
 					</div>
-				</div>
-			{/each}
+				{/each}
+			</div>
 		</div>
-		<div>
+		<div class="sticky bottom-0 flex items-center gap-4 border-t bg-background px-8 py-4">
 			<Form.Button disabled={$submitting}>
 				{#if $submitting}
 					Saving...
 				{:else}
-					Submit
+					Save changes
 				{/if}
 			</Form.Button>
+			<Button variant="outline" on:click={reset}>Reset changes</Button>
 		</div>
 	</form>
 </div>
