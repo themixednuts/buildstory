@@ -36,13 +36,15 @@
 <!-- <main class="container flex min-h-svh">
 	<div class="min-w-[10rem] border-r pr-6">
 		<div>
-			<a href="/" class="group flex items-center justify-start gap-2 px-2 py-6 font-semibold">
-				<StarFour
-					class="size-6 rotate-45 transition-all duration-300 ease-in-out group-hover:-rotate-[135deg]"
-					fill="gold"
-				/>
-				<span>Buildstory</span>
-			</a>
+			<a href="/" class="group flex items-center gap-2 font-semibold">
+					<div class="flex items-center justify-center rounded-lg bg-neutral-800 p-1">
+						<StarFour
+							class="size-6 rotate-45 transition-all duration-300 ease-in-out group-hover:-rotate-[135deg]"
+							fill="gold"
+						/>
+					</div>
+					<span class="">Buildstory</span>
+				</a>
 		</div>
 		<div>
 			<Sidenav />
@@ -72,8 +74,9 @@
 		</div>
 	</div>
 </main> -->
+
 <div class="container grid min-h-svh w-full pt-2 md:grid-cols-[12rem_1fr]">
-	<div class="hidden py-3 md:block">
+	<div class="hidden border-r py-3 md:block">
 		<div class="flex h-full max-h-screen flex-col gap-2">
 			<div class="flex h-14 items-center">
 				<a href="/" class="group flex items-center gap-2 font-semibold">
@@ -89,8 +92,8 @@
 			<Sidenav />
 		</div>
 	</div>
-	<div class="flex flex-col gap-2">
-		<header class="flex h-14 items-center gap-4 rounded-lg bg-neutral-900 px-6 py-10">
+	<div class="flex flex-col md:border-r">
+		<header class="flex h-14 items-center gap-4 border-b px-6 py-10">
 			<Sheet.Root>
 				<Sheet.Trigger asChild let:builder>
 					<Button variant="outline" size="icon" class="shrink-0 md:hidden" builders={[builder]}>
@@ -118,7 +121,7 @@
 				<Button href="/auth/signin">Sign In</Button>
 			{/if}
 		</header>
-		<main class="">
+		<main>
 			{@render children()}
 		</main>
 	</div>
