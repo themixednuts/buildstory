@@ -34,7 +34,7 @@
 			<DropdownMenu.Content align="end">
 				<DropdownMenu.Label>{profile.email}</DropdownMenu.Label>
 				<DropdownMenu.Separator />
-				<DropdownMenu.Item href="/settings">Settings</DropdownMenu.Item>
+				<DropdownMenu.Item href="/settings/profile">Settings</DropdownMenu.Item>
 				<!-- <DropdownMenu.Item>Support</DropdownMenu.Item> -->
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item on:click={() => $page.data.supabase.auth.signOut()}
