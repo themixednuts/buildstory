@@ -5,12 +5,17 @@
 	import { page } from '$app/stores';
 	import type { PageData } from '../../../routes/(_default)/$types';
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
+	import type { HTMLAttributes } from 'svelte/elements';
+	import { cn } from '$lib/shadcn/utils';
+
+	interface Props extends HTMLAttributes<HTMLDivElement> {}
+	const { class: className }: Props = $props();
 
 	const { profile } = $derived($page.data.user) as PageData['user'];
 </script>
 
 {#if profile}
-	<div class="flex items-center gap-2">
+	<div class={cn('flex items-center gap-2', className)}>
 		<Button variant="ghost" size="icon" class="ml-auto size-8">
 			<Bell class="size-6" />
 			<span class="sr-only">Toggle notifications</span>

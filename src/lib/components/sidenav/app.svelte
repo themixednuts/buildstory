@@ -1,11 +1,10 @@
 <script lang="ts">
-	import { Button } from '$lib/shadcn/components/ui/button';
 	import { cn } from '$lib/shadcn/utils';
 	import { Nut, UsersThree } from 'phosphor-svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
-		navClass?: HTMLAttributes<HTMLDivElement>['class'];
+		// navClass?: HTMLAttributes<HTMLDivElement>['class'];
 	}
 
 	let { class: className }: Props = $props();

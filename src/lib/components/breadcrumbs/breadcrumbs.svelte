@@ -2,7 +2,12 @@
 	import { page } from '$app/stores';
 	import * as Breadcrumb from '$lib/shadcn/components/ui/breadcrumb';
 	import { cn } from '$lib/shadcn/utils';
+	import { MoveRight } from 'lucide-svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
 
+	interface Props extends HTMLAttributes<HTMLDivElement> {}
+
+	const { class: className }: Props = $props();
 	const crumbs = $derived(
 		$page.url.href
 			.split('/')
@@ -14,7 +19,7 @@
 	);
 </script>
 
-<Breadcrumb.Root>
+<Breadcrumb.Root class={cn('', className)}>
 	<Breadcrumb.List class={cn('capitalize')}>
 		{#if crumbs.length > 1}
 			{#each crumbs as { label, href }, idx}
@@ -25,7 +30,9 @@
 					})}>{label}</Breadcrumb.Link
 				>
 				{#if idx < crumbs.length - 1}
-					<Breadcrumb.Separator />
+					<Breadcrumb.Separator>
+						<MoveRight />
+					</Breadcrumb.Separator>
 				{/if}
 			{/each}
 		{/if}
