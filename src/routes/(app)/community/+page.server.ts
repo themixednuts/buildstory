@@ -1,4 +1,4 @@
-import { PROFILE } from '$lib/db/queries.js';
+import { PROFILE } from '$lib/db/queries';
 
 export const load = async ({ locals: { supabase } }) => {
 	return {

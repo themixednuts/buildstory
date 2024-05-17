@@ -11,7 +11,7 @@
 	<!-- REPLACEME just for testing -->
 	<div class="flex gap-2">
 		{#each profiles as { username, avatar }}
-			<Button href="/community/{username}" size="icon">
+			<Button href="/profile/{username}" size="icon">
 				<img src={avatar} alt="" />
 			</Button>
 		{/each}
