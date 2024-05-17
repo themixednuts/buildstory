@@ -1,46 +1,11 @@
 <script lang="ts">
 	import Heading from '$lib/components/heading';
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
-	import { Trigger } from '$lib/shadcn/components/ui/dropdown-menu';
 	import * as Tabs from '$lib/shadcn/components/ui/tabs';
-	import {
-		ArrowRight,
-		DiscordLogo,
-		GithubLogo,
-		TwitchLogo,
-		TwitterLogo,
-		XLogo,
-	} from 'phosphor-svelte';
+	import { DiscordLogo, GithubLogo, TwitchLogo, TwitterLogo, XLogo } from 'phosphor-svelte';
 
 	const { data } = $props();
 	const { data: profile, error } = $derived(data.profile);
-
-	const DUMMY_PROJECTS = [
-		{
-			title: 'Project 1',
-			description: 'Description for Project 1',
-			logo: 'https://placehold.co/600x400/webp',
-			url: 'https://github.com/username/project1',
-			updated_at: '2023-05-12T00:00:00.000Z',
-			created_at: '2023-05-12T00:00:00.000Z',
-		},
-		{
-			title: 'Project 2',
-			description: 'Description for Project 2',
-			logo: 'https://placehold.co/600x400/webp',
-			url: 'https://github.com/username/project2',
-			updated_at: '2023-05-12T00:00:00.000Z',
-			created_at: '2023-05-12T00:00:00.000Z',
-		},
-		{
-			title: 'Project 3',
-			description: 'Description for Project 3',
-			logo: 'https://placehold.co/600x400/webp',
-			url: 'https://github.com/username/project3',
-			updated_at: '2023-05-12T00:00:00.000Z',
-			created_at: '2023-05-12T00:00:00.000Z',
-		},
-	];
 
 	$inspect(error);
 </script>
