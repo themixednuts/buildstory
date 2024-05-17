@@ -34,7 +34,7 @@
 </script>
 
 <main class="container flex min-h-svh">
-	<div class="min-w-[10rem] border-r pr-6">
+	<div class="min-w-[12rem] border-r pr-6">
 		<div>
 			<a href="/" class="group flex items-center justify-start gap-2 px-2 py-6 font-semibold">
 				<StarFour
