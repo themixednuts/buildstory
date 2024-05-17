@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Button } from '$lib/shadcn/components/ui/button';
 	import { cn } from '$lib/shadcn/utils';
 	import type { HTMLAttributes } from 'svelte/elements';
 
@@ -13,8 +12,8 @@
 		{
 			label: 'Profile',
 			href: '/settings/profile',
-			Icon: ''
-		}
+			Icon: '',
+		},
 		// {
 		// 	label: 'Community',
 		// 	href: '/community',

@@ -34,14 +34,14 @@
 </script>
 
 <main class="container flex min-h-svh">
-	<div class="w-40 border-r">
+	<div class="min-w-[10rem] border-r pr-6">
 		<div>
-			<a href="/" class="group flex items-center gap-2 py-6 font-semibold">
+			<a href="/" class="group flex items-center justify-start gap-2 px-2 py-6 font-semibold">
 				<StarFour
 					class="size-6 rotate-45 transition-all duration-300 ease-in-out group-hover:-rotate-[135deg]"
 					fill="gold"
 				/>
-				<span class="">Buildstory</span>
+				<span>Buildstory</span>
 			</a>
 		</div>
 		<div>
