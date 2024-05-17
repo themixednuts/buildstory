@@ -10,7 +10,8 @@
 	}
 	let { children, profile, class: className }: Props = $props();
 
-	setContext('profile', profile);
+	const profileState = $state({ profile });
+	setContext('profile', profileState);
 </script>
 
 <div class={cn('rounded-2xl bg-neutral-900', className)}>

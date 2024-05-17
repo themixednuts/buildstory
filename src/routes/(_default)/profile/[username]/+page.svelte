@@ -123,16 +123,13 @@
 			</div>
 			<Tabs.Content value="projects" class="mt-0">
 				<div>
-					<!-- {#each profile.projects as { title }}
-				{title}
-			{/each} -->
-					{#each DUMMY_PROJECTS as { title, description, logo, url, updated_at, created_at }}
+					{#each profile.projects as { title, description, logo, url, updated_at, created_at, id } (id)}
 						<a href="/project/123" class="flex flex-col gap-8 border-b p-8 hover:bg-accent/20">
 							<div class="flex items-center justify-between">
 								<div class="flex-auto">
 									<div class="flex items-center gap-6">
 										<Avatar.Root class="h-20 w-32 rounded-lg">
-											<Avatar.Image src={logo} />
+											<Avatar.Image src={logo || 'https://picsum.photos/200'} />
 										</Avatar.Root>
 										<div>
 											<Heading element="h3" variant="h4">

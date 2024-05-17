@@ -3,7 +3,7 @@
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
 	import { getContext } from 'svelte';
 
-	const profile = getContext<Tables<'profiles'>>('profile');
+	const { profile } = getContext<{ profile: Tables<'profiles'> }>('profile');
 </script>
 
 <Avatar.Root>

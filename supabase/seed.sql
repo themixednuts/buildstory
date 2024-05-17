@@ -100,38 +100,54 @@ INSERT INTO auth.identities (
         from auth.users
     );
 -- Seed data for the "profiles" table
-UPDATE "profiles" AS p
-SET "name" = 'User ' || (subquery.seq),
-    "avatar" = 'https://avatars.githubusercontent.com/u/' || (1 + FLOOR(RANDOM() * 999))
+UPDATE profiles AS p
+SET name = 'User ' || subquery.seq,
+    avatar = 'https://avatars.githubusercontent.com/u/' || (1 + FLOOR(RANDOM() * 999)),
+    location = subquery.random_city
 FROM (
         SELECT id,
-            ROW_NUMBER() OVER () AS seq
+            ROW_NUMBER() OVER () AS seq,
+            (
+                ARRAY ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose']
+            ) [FLOOR(RANDOM() * 10) + 1] AS random_city
         FROM auth.users
     ) AS subquery
-WHERE p."id" = subquery."id";
+WHERE p.id = subquery.id;
 -- Seed data for the "projects" table
-INSERT INTO "projects" (
-        "id",
-        "profile_id",
-        "title",
-        "description",
-        "logo",
-        "url",
-        "state_id",
-        "updated_at",
-        "created_at"
+WITH RECURSIVE project_cte AS (
+    SELECT p.id AS profile_id,
+        1 AS project_num,
+        FLOOR(1 + RANDOM() * 10) AS project_count
+    FROM auth.users u
+        JOIN profiles p ON u.id = p.id
+    UNION ALL
+    SELECT profile_id,
+        project_num + 1,
+        project_count
+    FROM project_cte
+    WHERE project_num < project_count
+)
+INSERT INTO projects (
+        id,
+        profile_id,
+        title,
+        description,
+        logo,
+        url,
+        state_id,
+        updated_at,
+        created_at
     )
 SELECT gen_random_uuid() AS id,
-    p.id AS profile_id,
-    'Project ' || ROW_NUMBER() OVER () AS title,
-    'Description for Project ' || ROW_NUMBER() OVER () AS description,
+    profile_id,
+    'Project ' || project_num AS title,
+    'Description for Project ' || project_num AS description,
     '' AS logo,
     '' AS url,
-    2 AS state,
+    2 AS state_id,
     current_timestamp AS updated_at,
     current_timestamp AS created_at
-FROM auth.users u
-    JOIN "profiles" p ON u.id = p.id;
+FROM project_cte;
 -- Generate random badges for each profile
 INSERT INTO "profiles_badges" ("badge_id", "profile_id", "created_at")
 SELECT b.id AS badge_id,

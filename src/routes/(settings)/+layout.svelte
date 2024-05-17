@@ -3,11 +3,11 @@
 	import Menu from 'lucide-svelte/icons/menu';
 
 	import { Button } from '$lib/shadcn/components/ui/button';
-	import Dropdown from '$lib/components/menu';
-	import Breadcrumb from '$lib/components/breadcrumbs';
 	import * as Sheet from '$lib/shadcn/components/ui/sheet';
+	import Dropdown from '$lib/components/menu/';
 	import { onMount } from 'svelte';
 	import { goto, invalidate } from '$app/navigation';
+	import Breadcrumb from '$lib/components/breadcrumbs';
 	import { StarFour } from 'phosphor-svelte';
 
 	const { data, children } = $props();
@@ -21,31 +21,31 @@
 				 * triggering function from completing
 				 */
 				setTimeout(() => {
-					goto('/auth/signin', { invalidateAll: true });
+					goto('/', { invalidateAll: true });
 				});
 			}
 			if (newSession?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
 			}
 		});
+
 		return () => data.subscription.unsubscribe();
 	});
 </script>
 
-<div class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-	<div class="hidden border-r bg-muted/40 md:block">
-		<div class="flex h-full max-h-screen flex-col gap-2">
-			<div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-				<a href="/" class="flex items-center gap-2 font-semibold">
-					<StarFour class="size-6 rotate-45" fill="gold" />
-					<span class="">Buildstory</span>
-				</a>
-			</div>
-			<Sidenav />
+<!-- <main class="container flex min-h-svh">
+	<div class="min-w-[10rem] border-r pr-6">
+		<div>
+			<a href="/" class="group flex items-center justify-start gap-2 px-2 py-6 font-semibold">
+				<StarFour
+					class="size-6 rotate-45 transition-all duration-300 ease-in-out group-hover:-rotate-[135deg]"
+					fill="gold"
+				/>
+				<span>Buildstory</span>
+			</a>
 		</div>
-	</div>
-	<div class="flex flex-col">
-		<header class="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+		<div>
+			<Sidenav />
 			<Sheet.Root>
 				<Sheet.Trigger asChild let:builder>
 					<Button variant="outline" size="icon" class="shrink-0 md:hidden" builders={[builder]}>
@@ -57,18 +57,60 @@
 					<Sidenav navClass="grid gap-2 text-lg font-medium" />
 				</Sheet.Content>
 			</Sheet.Root>
-			<div class="w-full flex-1">
-				<Breadcrumb />
-				<!-- <form>
-					<div class="relative">
-						<Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-						<Input
-							type="search"
-							placeholder="Search products..."
-							class="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
+		</div>
+	</div>
+	<div class="flex flex-auto flex-col border-r">
+		<div class="flex h-16 items-center justify-end border-b px-6">
+			{#if user?.id}
+				<Dropdown />
+			{:else}
+				<Button href="/auth/signin">Sign In</Button>
+			{/if}
+		</div>
+		<div>
+			{@render children()}
+		</div>
+	</div>
+</main> -->
+<div class="container grid min-h-svh w-full pt-2 md:grid-cols-[12rem_1fr]">
+	<div class="hidden py-3 md:block">
+		<div class="flex h-full max-h-screen flex-col gap-2">
+			<div class="flex h-14 items-center">
+				<a href="/" class="group flex items-center gap-2 font-semibold">
+					<div class="flex items-center justify-center rounded-lg bg-neutral-800 p-1">
+						<StarFour
+							class="size-6 rotate-45 transition-all duration-300 ease-in-out group-hover:-rotate-[135deg]"
+							fill="gold"
 						/>
 					</div>
-				</form> -->
+					<span class="">Buildstory</span>
+				</a>
+			</div>
+			<Sidenav />
+		</div>
+	</div>
+	<div class="flex flex-col gap-2">
+		<header class="flex h-14 items-center gap-4 rounded-lg bg-neutral-900 px-6 py-10">
+			<Sheet.Root>
+				<Sheet.Trigger asChild let:builder>
+					<Button variant="outline" size="icon" class="shrink-0 md:hidden" builders={[builder]}>
+						<Menu class="h-5 w-5" />
+						<span class="sr-only">Toggle navigation menu</span>
+					</Button>
+				</Sheet.Trigger>
+				<Sheet.Content side="left" class="flex flex-col">
+					<a href="/" class="group flex items-center gap-2 font-semibold">
+						<StarFour
+							class="size-6 rotate-45 transition-all duration-300 ease-in-out group-hover:-rotate-[135deg]"
+							fill="gold"
+						/>
+						<span class="">Buildstory</span>
+					</a>
+					<Sidenav class="grid gap-2 text-lg font-medium" />
+				</Sheet.Content>
+			</Sheet.Root>
+			<div class="w-full flex-1">
+				<Breadcrumb class="hidden sm:block" />
 			</div>
 			{#if user?.id}
 				<Dropdown />
@@ -76,7 +118,7 @@
 				<Button href="/auth/signin">Sign In</Button>
 			{/if}
 		</header>
-		<main class="p-8">
+		<main class="">
 			{@render children()}
 		</main>
 	</div>
