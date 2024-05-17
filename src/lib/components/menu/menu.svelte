@@ -7,6 +7,7 @@
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { cn } from '$lib/shadcn/utils';
+	import { Item } from '$lib/shadcn/components/ui/breadcrumb';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {}
 	const { class: className }: Props = $props();
@@ -20,13 +21,13 @@
 			<Bell class="size-6" />
 			<span class="sr-only">Toggle notifications</span>
 		</Button>
-		<Avatar.Root class="size-8 rounded-lg">
-			<Avatar.Image class="rounded-lg" src={profile.avatar}></Avatar.Image>
-		</Avatar.Root>
-		<div>{profile.username}</div>
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
-				<Button variant="outline" class="size-6" size="icon" builders={[builder]}>
+				<Button variant="ghost" class="flex items-center gap-2 px-2.5" builders={[builder]}>
+					<Avatar.Root class="size-6 rounded-lg">
+						<Avatar.Image class="rounded-lg" src={profile.avatar}></Avatar.Image>
+					</Avatar.Root>
+					<div>{profile.username}</div>
 					<CaretDown />
 					<span class="sr-only">Toggle navigation menu</span>
 				</Button>
@@ -35,6 +36,7 @@
 				<DropdownMenu.Label>{profile.email}</DropdownMenu.Label>
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item href="/settings/profile">Settings</DropdownMenu.Item>
+				<DropdownMenu.Item href={`/profile/${profile.username}`}>Profile</DropdownMenu.Item>
 				<!-- <DropdownMenu.Item>Support</DropdownMenu.Item> -->
 				<DropdownMenu.Separator />
 				<DropdownMenu.Item on:click={() => $page.data.supabase.auth.signOut()}
