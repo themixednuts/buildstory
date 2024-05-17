@@ -12,10 +12,10 @@
 	const { user } = $derived(data);
 </script>
 
-<div class="border-t">
+<div class="border-y">
 	<div class="container grid min-h-svh w-full md:grid-cols-[12rem_1fr]">
 		<div class="hidden border-r py-3 md:block">
-			<div class="flex h-full max-h-screen flex-col gap-2">
+			<div class="sticky top-3 space-y-2">
 				<div class="flex h-14 items-center">
 					<a href="/" class="group flex items-center gap-2 font-semibold">
 						<div class="flex items-center justify-center rounded-lg bg-neutral-800 p-1">
