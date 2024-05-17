@@ -9,7 +9,7 @@
 		<div class="mx-auto grid w-[350px] gap-6">
 			<Auth
 				supabaseClient={data.supabase}
-				providers={['google', 'github', 'twitter', 'twitch']}
+				providers={['discord', 'github', 'twitter', 'twitch']}
 				redirectTo=""
 				appearance={{
 					theme: ThemeMinimal,

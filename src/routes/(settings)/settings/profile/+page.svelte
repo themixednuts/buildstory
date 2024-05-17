@@ -15,7 +15,6 @@
 		IdentificationBadge,
 		MapPin,
 		TwitchLogo,
-		WarningCircle,
 		XLogo,
 	} from 'phosphor-svelte';
 	import { schema } from './schema.js';
@@ -24,6 +23,11 @@
 	import { Button } from '$lib/shadcn/components/ui/button';
 	import { debounce } from '$lib/utils.svelte.js';
 	import { searchForProfileByUsername } from '$lib/db/helpers.js';
+	import { Label } from '$lib/shadcn/components/ui/label';
+	import { Badge } from '$lib/shadcn/components/ui/badge';
+	import type { Provider } from '@supabase/supabase-js';
+	import { invalidateAll } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	const { data } = $props();
 	const { user, supabase } = $derived(data);
@@ -61,11 +65,41 @@
 
 	let checking = $state({
 		username: false,
-		// github: false,
-		// discord: false,
-		// twitch: false,
-		// twitter: false,
 	});
+
+	type Providers = {
+		label: Capitalize<Provider> | string;
+		provider: Provider;
+		value: any;
+		Logo: typeof GithubLogo | typeof TwitchLogo | typeof XLogo | typeof DiscordLogo;
+	};
+	const providers: Providers[] = $derived([
+		{
+			label: 'Github',
+			Logo: GithubLogo,
+			value: user.identities?.find((iden) => iden.provider === 'github')?.identity_data?.user_name,
+			provider: 'github',
+		},
+		{
+			label: 'Twitch',
+			Logo: TwitchLogo,
+			value: user.identities?.find((iden) => iden.provider === 'twitch')?.identity_data?.full_name,
+			provider: 'twitch',
+		},
+		{
+			label: 'X (Twitter)',
+			Logo: XLogo,
+			// have to check what twitter returns
+			value: user.identities?.find((iden) => iden.provider === 'twitter')?.identity_data?.user_name,
+			provider: 'twitter',
+		},
+		{
+			label: 'Discord',
+			Logo: DiscordLogo,
+			value: user.identities?.find((iden) => iden.provider === 'discord')?.identity_data?.full_name,
+			provider: 'discord',
+		},
+	]);
 
 	const debounceUsername = debounce(async (e: Event & { currentTarget: HTMLInputElement }) => {
 		checking.username = true;
@@ -239,58 +273,62 @@
 			<div class="flex-auto border-b"></div>
 		</div>
 		<div class="grid grid-cols-1 gap-6 rounded-lg border bg-accent/20 p-6 md:grid-cols-2">
-			<Form.Field {form} name="github">
-				<Form.Control let:attrs>
-					<Form.Label>Github</Form.Label>
+			{#each providers as { label, Logo, value, provider }}
+				<div class="">
+					<Label>{label}</Label>
 					<div class="relative w-full">
-						<Input {...attrs} class="peer pl-8" bind:value={$formData.github} />
-						<GithubLogo
-							size={16}
-							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
-						/>
+						{#if value}
+							<Badge variant="outline" class="gap-2 py-2">
+								<Logo size={16} class="" />
+								{value}
+							</Badge>
+							<Button
+								variant="destructive"
+								size="sm"
+								onclick={async () => {
+									const iden = user.identities?.find((identity) => identity.provider === provider);
+									if (!iden) return;
+									const { error } = await supabase.auth.unlinkIdentity(iden);
+									if (error)
+										toast.error(`Can't unlink ${label}`, {
+											description: error.message,
+										});
+									else {
+										toast.success(`${label} unlinked`);
+										invalidateAll();
+									}
+								}}
+							>
+								Unlink
+							</Button>
+						{:else}
+							<Button
+								variant="outline"
+								class="gap-2"
+								size="sm"
+								onclick={async () => {
+									const { error } = await supabase.auth.linkIdentity({
+										provider,
+										options: {
+											redirectTo: `${$page.url.origin}/settings/profile`,
+										},
+									});
+									if (error)
+										toast.error(`Issue linking ${label} to your profile`, {
+											description: error.message,
+										});
+									else {
+										// toast.success(`Linked ${provider} to your profile!`);
+									}
+								}}
+							>
+								<Logo size={16} class="" />
+								Link
+							</Button>
+						{/if}
 					</div>
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-			<Form.Field {form} name="twitch">
-				<Form.Control let:attrs>
-					<Form.Label>Twitch</Form.Label>
-					<div class="relative w-full">
-						<Input {...attrs} class="peer pl-8" bind:value={$formData.twitch} />
-						<TwitchLogo
-							size={16}
-							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
-						/>
-					</div>
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-			<Form.Field {form} name="discord">
-				<Form.Control let:attrs>
-					<Form.Label>Discord</Form.Label>
-					<div class="relative w-full">
-						<Input {...attrs} class="peer pl-8" bind:value={$formData.discord} />
-						<DiscordLogo
-							size={16}
-							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
-						/>
-					</div>
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
-			<Form.Field {form} name="twitter">
-				<Form.Control let:attrs>
-					<Form.Label>X (Twitter)</Form.Label>
-					<div class="relative w-full">
-						<Input {...attrs} class="peer pl-8" bind:value={$formData.twitter} />
-						<XLogo
-							size={16}
-							class="absolute left-2.5 top-1/2 -translate-y-1/2 opacity-50 peer-focus:opacity-100"
-						/>
-					</div>
-				</Form.Control>
-				<Form.FieldErrors />
-			</Form.Field>
+				</div>
+			{/each}
 		</div>
 		<div>
 			<Form.Button disabled={$submitting}>

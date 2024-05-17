@@ -40,7 +40,7 @@ CREATE OR REPLACE FUNCTION public.handle_new_user() RETURNS TRIGGER AS $$ BEGIN 
             ROW_NUMBER() OVER () AS row_num
         FROM auth.users
     )
-INSERT INTO public.profiles(id, email, avatar, username, github)
+INSERT INTO public.profiles(id, email, avatar, username)
 VALUES(
         NEW.id,
         NEW.email,
@@ -54,8 +54,15 @@ VALUES(
                         WHERE id = NEW.id
                     )
                 )
-        ),
-        NEW.raw_user_meta_data->>'user_name'
+        )
+    ) ON CONFLICT("username") DO
+UPDATE
+SET username = (
+        'user' || (
+            SELECT row_num
+            FROM numbered_users
+            WHERE id = NEW.id
+        )
     );
 RETURN new;
 END;
@@ -63,6 +70,61 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE TRIGGER on_auth_user_created
 AFTER
 INSERT ON auth.users FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+CREATE OR REPLACE FUNCTION public.handle_new_identity() RETURNS TRIGGER AS $$ BEGIN
+UPDATE public.profiles
+SET github = CASE
+        WHEN NEW.provider = 'github' THEN NEW.identity_data->>'user_name'
+        ELSE github
+    END,
+    discord = CASE
+        WHEN NEW.provider = 'discord' THEN NEW.identity_data->>'full_name'
+        ELSE discord
+    END,
+    twitch = CASE
+        WHEN NEW.provider = 'twitch' THEN NEW.identity_data->>'full_name'
+        ELSE twitch
+    END,
+    twitter = CASE
+        WHEN NEW.provider = 'twitter' THEN NEW.identity_data->>'user_name'
+        ELSE twitter
+    END
+WHERE
+    /* Add conditions to specify which rows you want to update */
+    /* For example, you might want to update based on the user's ID */
+    id = NEW.user_id;
+RETURN new;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+CREATE TRIGGER on_auth_indentity_created
+AFTER
+INSERT ON auth.identities FOR EACH ROW EXECUTE PROCEDURE public.handle_new_identity();
+CREATE OR REPLACE FUNCTION public.handle_delete_identity() RETURNS TRIGGER AS $$ BEGIN
+UPDATE public.profiles
+SET github = CASE
+        WHEN OLD.provider = 'github' THEN NULL
+        ELSE github
+    END,
+    discord = CASE
+        WHEN OLD.provider = 'discord' THEN NULL
+        ELSE discord
+    END,
+    twitch = CASE
+        WHEN OLD.provider = 'twitch' THEN NULL
+        ELSE twitch
+    END,
+    twitter = CASE
+        WHEN OLD.provider = 'twitter' THEN NULL
+        ELSE twitter
+    END
+WHERE
+    /* Add conditions to specify which rows you want to update */
+    /* For example, you might want to update based on the user's ID */
+    id = OLD.user_id;
+RETURN new;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+CREATE TRIGGER on_auth_indentity_deleted
+AFTER DELETE ON auth.identities FOR EACH ROW EXECUTE PROCEDURE public.handle_delete_identity();
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('profile_pictures', 'profile_pictures', TRUE) ON CONFLICT DO NOTHING;
 -- Set the bucket to be publicly accessible
