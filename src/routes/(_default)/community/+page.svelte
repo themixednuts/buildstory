@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Heading from '$lib/components/heading';
+	import { PageHeader } from '$lib/components/page-header';
 
 	const { data } = $props();
 	const { data: profiles, error } = $derived(data.profiles);
@@ -8,12 +8,7 @@
 </script>
 
 <div>
-	<div class="flex flex-col items-start justify-end gap-2 border-b bg-accent/50 px-6 pb-4 pt-20">
-		<Heading element="h1">Community</Heading>
-		<Heading element="h2" variant="h5" class="font-normal opacity-50"
-			>See all community members. Probably just a test.</Heading
-		>
-	</div>
+	<PageHeader title="Community" subtitle="See all community members. Probably just a test." />
 	{#if profiles}
 		<div class="flex flex-col">
 			{#each profiles as { username, avatar }, idx}

@@ -1,7 +1,7 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
 import type { Config } from 'tailwindcss';
 
-const maxWidth = '70rem';
+const maxWidth = '72rem';
 
 const config: Config = {
 	darkMode: ['class'],

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Heading from '$lib/components/heading';
+	import { Heading } from '$lib/components/heading';
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
 	import * as Tabs from '$lib/shadcn/components/ui/tabs';
 	import { DiscordLogo, GithubLogo, TwitchLogo, TwitterLogo, XLogo } from 'phosphor-svelte';
@@ -12,7 +12,7 @@
 
 <main>
 	{#if profile}
-		<header class="flex items-end border-b bg-accent/30 p-10">
+		<header class="flex items-end border-b bg-accent/30 p-8">
 			<div class="flex flex-auto items-center gap-8">
 				<Avatar.Root class="size-32 rounded-lg">
 					<Avatar.Image src={profile.avatar} />

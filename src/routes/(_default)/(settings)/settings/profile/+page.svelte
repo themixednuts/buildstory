@@ -1,10 +1,13 @@
 <script lang="ts">
+	import type { Provider } from '@supabase/supabase-js';
+
+	import { page } from '$app/stores';
 	import { fileProxy, superForm } from 'sveltekit-superforms';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import * as Form from '$lib/shadcn/components/ui/form';
+	import * as Avatar from '$lib/shadcn/components/ui/avatar';
 	import { Input } from '$lib/shadcn/components/ui/input';
 	import { Textarea } from '$lib/shadcn/components/ui/textarea';
-	import * as Avatar from '$lib/shadcn/components/ui/avatar';
 	import { toast } from 'svelte-sonner';
 	import {
 		ArrowSquareOut,
@@ -19,15 +22,15 @@
 	} from 'phosphor-svelte';
 	import { schema } from './schema.js';
 	import { onMount } from 'svelte';
-	import Heading from '$lib/components/heading';
+	import { Heading } from '$lib/components/heading';
 	import { Button } from '$lib/shadcn/components/ui/button';
 	import { debounce } from '$lib/utils.svelte.js';
 	import { searchForProfileByUsername } from '$lib/db/helpers.js';
 	import { Label } from '$lib/shadcn/components/ui/label';
 	import { Badge } from '$lib/shadcn/components/ui/badge';
-	import type { Provider } from '@supabase/supabase-js';
+
 	import { invalidateAll } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { PageHeader } from '$lib/components/page-header';
 
 	const { data } = $props();
 	const { user, supabase } = $derived(data);
@@ -122,12 +125,7 @@
 </script>
 
 <div class="flex flex-col">
-	<div class="flex flex-col items-start justify-end gap-2 border-b bg-accent/50 px-6 pb-4 pt-20">
-		<Heading element="h1">Edit your details</Heading>
-		<Heading element="h2" variant="h5" class="font-normal opacity-50"
-			>Make changes to your profile here.</Heading
-		>
-	</div>
+	<PageHeader title="Edit your details" subtitle="Make changes to your profile here." />
 	<form method="post" use:enhance class="flex flex-col gap-6" enctype="multipart/form-data">
 		<div class="px-2 md:px-10">
 			<div class="flex items-center justify-center gap-4 pt-10">

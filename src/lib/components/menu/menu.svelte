@@ -7,11 +7,10 @@
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
 	import type { HTMLAttributes } from 'svelte/elements';
 	import { cn } from '$lib/shadcn/utils';
-	import { Item } from '$lib/shadcn/components/ui/breadcrumb';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {}
-	const { class: className }: Props = $props();
 
+	const { class: className }: Props = $props();
 	const { profile } = $derived($page.data.user) as PageData['user'];
 </script>
 
