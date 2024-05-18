@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/shadcn/utils';
-	import { Nut, UsersThree } from 'phosphor-svelte';
+	import { NewspaperClipping, Nut, Package, UsersThree } from 'phosphor-svelte';
 	import type { HTMLAttributes } from 'svelte/elements';
 
 	interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -10,11 +10,6 @@
 	let { class: className }: Props = $props();
 
 	const links = [
-		// {
-		// 	label: 'Dashboard',
-		// 	href: '/dashboard',
-		// 	Icon: '',
-		// },
 		{
 			label: 'Community',
 			href: '/community',
@@ -25,14 +20,16 @@
 			href: '/projects',
 			Icon: Nut,
 		},
-		// {
-		// 	label: 'Shipathons',
-		// 	href: '/shipathons',
-		// },
-		// {
-		// 	label: 'Settings',
-		// 	href: '/settings'
-		// }
+		{
+			label: 'Updates',
+			href: '/updates',
+			Icon: NewspaperClipping,
+		},
+		{
+			label: 'Shipathons',
+			href: '/shipathons',
+			Icon: Package,
+		},
 	];
 </script>
 

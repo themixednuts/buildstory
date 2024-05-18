@@ -6,7 +6,8 @@
 	import * as Sheet from '$lib/shadcn/components/ui/sheet';
 	import Dropdown from '$lib/components/menu/';
 	import Breadcrumb from '$lib/components/breadcrumbs';
-	import { StarFour } from 'phosphor-svelte';
+	import { MagnifyingGlass, StarFour } from 'phosphor-svelte';
+	import Input from '$lib/shadcn/components/ui/input/input.svelte';
 
 	const { data, children } = $props();
 	const { user } = $derived(data);
@@ -50,8 +51,12 @@
 						<Sidenav class="grid gap-2 text-lg font-medium" />
 					</Sheet.Content>
 				</Sheet.Root>
-				<div class="w-full flex-1">
-					<Breadcrumb class="hidden sm:block" />
+				<div class="relative w-full flex-1">
+					<Input placeholder="Search..." class="peer max-w-64 pl-10" />
+					<MagnifyingGlass
+						class="pointer-events-none absolute left-3 top-3  opacity-50 peer-focus:opacity-100"
+					/>
+					<!-- <Breadcrumb class="hidden sm:block" /> -->
 				</div>
 				{#if user?.id}
 					<Dropdown />
