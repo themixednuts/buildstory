@@ -1,3 +1,4 @@
+const plugin = require('tailwindcss/plugin');
 import { fontFamily } from 'tailwindcss/defaultTheme';
 import type { Config } from 'tailwindcss';
 
@@ -69,6 +70,16 @@ const config: Config = {
 			},
 		},
 	},
+	plugins: [
+		plugin(function ({ addVariant }) {
+			addVariant('hocus', ['&:hover', '&:focus']);
+			addVariant('group-hocus', [':merge(.group):hover &', ':merge(.group):focus &']);
+			addVariant('factive', ['&:active', '&:focus']);
+			addVariant('all', ['&:active', '&:focus', '&:hover']);
+			addVariant('list', ['.list-primary &']);
+			addVariant('light', ['html.light &']);
+		}),
+	],
 };
 
 export default config;
