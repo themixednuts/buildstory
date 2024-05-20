@@ -12,7 +12,7 @@
 	<ul>
 		{#if projects}
 			{#each projects as { title, description, logo, url, updated_at, created_at, id, profile } (id)}
-				<a href="/project/123" class="flex flex-col gap-8 border-b p-8 hover:bg-accent/20">
+				<a href={`/projects/${id}`} class="flex flex-col gap-8 border-b p-8 hover:bg-accent/20">
 					<div class="flex items-center justify-between">
 						<div class="flex-auto">
 							<div class="flex items-center gap-6">

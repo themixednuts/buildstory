@@ -3,7 +3,7 @@
 
 	interface PageHeaderProps {
 		title: string;
-		subtitle?: string;
+		subtitle?: string | null;
 	}
 
 	const { title, subtitle }: PageHeaderProps = $props();
