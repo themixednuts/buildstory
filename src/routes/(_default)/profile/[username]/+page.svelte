@@ -5,9 +5,7 @@
 	import { DiscordLogo, GithubLogo, TwitchLogo, TwitterLogo, XLogo } from 'phosphor-svelte';
 
 	const { data } = $props();
-	const { data: profile, error } = $derived(data.profile);
-
-	$inspect(error);
+	const { data: profile } = $derived(data.profile);
 </script>
 
 <main>

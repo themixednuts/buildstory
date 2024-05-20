@@ -2,9 +2,7 @@
 	import { PageHeader } from '$lib/components/page-header';
 
 	const { data } = $props();
-	const { data: profiles, error } = $derived(data.profiles);
-	$inspect(error);
-	$inspect(profiles);
+	const { data: profiles } = $derived(data.profiles);
 </script>
 
 <div>
