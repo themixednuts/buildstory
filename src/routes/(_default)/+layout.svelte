@@ -19,11 +19,22 @@
 			<div class="sticky top-3 space-y-2">
 				<div class="flex h-14 items-center">
 					<a href="/" class="group flex items-center gap-2 font-semibold">
-						<div class="flex items-center justify-center rounded-lg bg-neutral-800 p-1">
-							<StarFour
-								class="size-6 rotate-45 transition-all duration-300 ease-in-out group-hover:-rotate-[135deg]"
-								fill="gold"
-							/>
+						<div
+							class="group-hocus:bg- flex items-center justify-center rounded-lg bg-neutral-800 p-2 shadow-[0px_1px_40px] shadow-amber-500/50 transition-all duration-[400ms] ease-in-out group-hocus:shadow-amber-400/70"
+						>
+							<svg
+								class="size-3 text-amber-500 transition-all duration-[400ms] ease-in-out group-hocus:-rotate-[180deg] group-hocus:scale-125 group-hocus:text-amber-400"
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 16 16"
+								fill="none"
+							>
+								<path
+									fill="currentColor"
+									fill-rule="evenodd"
+									d="M15.847.145a.89.89 0 0 0-.012-.01.504.504 0 0 0-.659-.022C10.394 3.33 5.743 3.63.83.119a.504.504 0 0 0-.596-.04.505.505 0 0 0-.113.754c3.508 4.91 3.208 9.56-.005 14.339a.504.504 0 0 0 .001.645.535.535 0 0 0 .046.049.504.504 0 0 0 .659.021c4.784-3.215 9.434-3.517 14.347-.006a.504.504 0 0 0 .594.04l.004-.003a.472.472 0 0 0 .128-.118l.006-.008a.504.504 0 0 0-.023-.625c-3.507-4.911-3.206-9.559.006-14.34a.505.505 0 0 0-.036-.683v.001Z"
+									clip-rule="evenodd"
+								/>
+							</svg>
 						</div>
 						<span>Buildstory</span>
 					</a>
@@ -42,11 +53,24 @@
 					</Sheet.Trigger>
 					<Sheet.Content side="left" class="flex flex-col">
 						<a href="/" class="group flex items-center gap-2 font-semibold">
-							<StarFour
-								class="size-6 rotate-45 transition-all duration-300 ease-in-out group-hover:-rotate-[135deg]"
-								fill="gold"
-							/>
-							<span class="">Buildstory</span>
+							<div
+								class="group-hocus:bg- flex items-center justify-center rounded-lg bg-neutral-800 p-2 shadow-[0px_1px_40px] shadow-amber-500/50 transition-all duration-[400ms] ease-in-out group-hocus:shadow-amber-400/70"
+							>
+								<svg
+									class="size-3 text-amber-500 transition-all duration-[400ms] ease-in-out group-hocus:-rotate-[180deg] group-hocus:scale-125 group-hocus:text-amber-400"
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 16 16"
+									fill="none"
+								>
+									<path
+										fill="currentColor"
+										fill-rule="evenodd"
+										d="M15.847.145a.89.89 0 0 0-.012-.01.504.504 0 0 0-.659-.022C10.394 3.33 5.743 3.63.83.119a.504.504 0 0 0-.596-.04.505.505 0 0 0-.113.754c3.508 4.91 3.208 9.56-.005 14.339a.504.504 0 0 0 .001.645.535.535 0 0 0 .046.049.504.504 0 0 0 .659.021c4.784-3.215 9.434-3.517 14.347-.006a.504.504 0 0 0 .594.04l.004-.003a.472.472 0 0 0 .128-.118l.006-.008a.504.504 0 0 0-.023-.625c-3.507-4.911-3.206-9.559.006-14.34a.505.505 0 0 0-.036-.683v.001Z"
+										clip-rule="evenodd"
+									/>
+								</svg>
+							</div>
+							<span>Buildstory</span>
 						</a>
 						<Sidenav class="grid gap-2 text-lg font-medium" />
 					</Sheet.Content>

@@ -24,7 +24,7 @@
 	import { onMount } from 'svelte';
 	import { Heading } from '$lib/components/heading';
 	import { Button } from '$lib/shadcn/components/ui/button';
-	import { debounce } from '$lib/utils.svelte.js';
+	import { debounce } from '$lib/utils.svelte';
 	import { searchForProfileByUsername } from '$lib/db/helpers.js';
 	import { Label } from '$lib/shadcn/components/ui/label';
 	import { Badge } from '$lib/shadcn/components/ui/badge';
@@ -127,8 +127,8 @@
 <div class="flex flex-col">
 	<PageHeader title="Edit your details" subtitle="Make changes to your profile here." />
 	<form method="post" use:enhance class="flex flex-col gap-6" enctype="multipart/form-data">
-		<div class="px-2 md:px-10">
-			<div class="flex items-center justify-center gap-4 pt-10">
+		<div class="px-2 md:px-6">
+			<div class="flex items-center justify-center gap-4 pt-6">
 				<Heading element="h3">Appearance</Heading>
 				<div class="flex-auto border-b"></div>
 			</div>

@@ -1,8 +1,7 @@
 <script>
 	import { Heading } from '$lib/components/heading';
-	import * as Tabs from '$lib/shadcn/components/ui/tabs';
+	import * as Tabs from '$lib/components/tabs';
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
-	import { Separator } from '$lib/shadcn/components/ui/separator';
 	import { FigmaLogo, GithubLogo, Package, Trophy } from 'phosphor-svelte';
 	import { timeRounder } from '$lib/utils.svelte';
 
@@ -57,8 +56,8 @@
 		</div>
 		<div>
 			<Tabs.Root value="updates">
-				<div class="flex border-b px-6 py-4">
-					<Tabs.List>
+				<div class="flex border-b px-6 pt-3">
+					<Tabs.List class="translate-y-[1px]">
 						<Tabs.Trigger value="updates">Updates</Tabs.Trigger>
 						<Tabs.Trigger value="about">About</Tabs.Trigger>
 						<Tabs.Trigger value="awards">Awards</Tabs.Trigger>
@@ -85,7 +84,7 @@
 						{/if}
 						<li class="w-full">
 							<a
-								class="hocus:underline inline-flex w-full items-center gap-2 rounded-lg border bg-accent/50 p-4"
+								class="inline-flex w-full items-center gap-2 rounded-lg border bg-accent/50 p-4 hocus:underline"
 								href="#"
 							>
 								<GithubLogo />
@@ -94,7 +93,7 @@
 						</li>
 						<li class="w-full">
 							<a
-								class="hocus:underline inline-flex w-full items-center gap-2 rounded-lg border bg-accent/50 p-4"
+								class="inline-flex w-full items-center gap-2 rounded-lg border bg-accent/50 p-4 hocus:underline"
 								href="#"
 							>
 								<FigmaLogo />

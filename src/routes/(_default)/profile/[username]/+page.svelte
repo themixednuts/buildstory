@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Heading } from '$lib/components/heading';
 	import * as Avatar from '$lib/shadcn/components/ui/avatar';
-	import * as Tabs from '$lib/shadcn/components/ui/tabs';
+	import * as Tabs from '$lib/components/tabs';
 	import { DiscordLogo, GithubLogo, TwitchLogo, TwitterLogo, XLogo } from 'phosphor-svelte';
 
 	const { data } = $props();
@@ -76,8 +76,8 @@
 		</header>
 
 		<Tabs.Root value="projects">
-			<div class="flex border-b px-6 py-4">
-				<Tabs.List>
+			<div class="flex border-b px-6 pt-3">
+				<Tabs.List class="translate-y-[1px]">
 					<Tabs.Trigger value="projects">Projects</Tabs.Trigger>
 					<Tabs.Trigger value="comments">Comments</Tabs.Trigger>
 					<Tabs.Trigger value="shipathons">Shipathons</Tabs.Trigger>
