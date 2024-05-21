@@ -20,7 +20,7 @@
 				<div class="flex h-14 items-center">
 					<a href="/" class="group flex items-center gap-2 font-semibold">
 						<div
-							class="group-hocus:bg- flex items-center justify-center rounded-lg bg-neutral-800 p-2 shadow-[0px_1px_40px] shadow-amber-500/50 transition-all duration-[400ms] ease-in-out group-hocus:shadow-amber-400/70"
+							class="group-hocus:bg- flex items-center justify-center rounded-lg bg-neutral-800 p-2 shadow-[0px_1px_40px] shadow-amber-500/60 transition-all duration-[400ms] ease-in-out group-hocus:shadow-amber-400/80"
 						>
 							<svg
 								class="size-3 text-amber-500 transition-all duration-[400ms] ease-in-out group-hocus:-rotate-[180deg] group-hocus:scale-125 group-hocus:text-amber-400"
