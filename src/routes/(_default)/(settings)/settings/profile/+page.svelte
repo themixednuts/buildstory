@@ -128,7 +128,7 @@
 	<PageHeader title="Edit your details" subtitle="Make changes to your profile here." />
 	<form method="post" use:enhance class="flex flex-col gap-6" enctype="multipart/form-data">
 		<div class="px-2 md:px-6">
-			<div class="flex items-center justify-center gap-4 pt-6">
+			<div class="flex items-center justify-center gap-4 pb-2 pt-10">
 				<Heading element="h3">Appearance</Heading>
 				<div class="flex-auto border-b"></div>
 			</div>
@@ -159,7 +159,7 @@
 					<Form.FieldErrors />
 				</Form.Field>
 			</div>
-			<div class="flex items-center justify-center gap-4 pt-10">
+			<div class="flex items-center justify-center gap-4 pb-2 pt-10">
 				<Heading element="h3">Account info</Heading>
 				<div class="flex-auto border-b"></div>
 			</div>
@@ -212,7 +212,7 @@
 					<Form.FieldErrors />
 				</Form.Field>
 			</div>
-			<div class="flex items-center justify-center gap-4 pt-10">
+			<div class="flex items-center justify-center gap-4 pb-2 pt-10">
 				<Heading element="h3">About you</Heading>
 				<div class="flex-auto border-b"></div>
 			</div>
@@ -274,7 +274,7 @@
 					<Form.FieldErrors />
 				</Form.Field>
 			</div>
-			<div class="flex items-center justify-center gap-4 pt-10">
+			<div class="flex items-center justify-center gap-4 pb-2 pt-10">
 				<Heading element="h3">Socials</Heading>
 				<div class="flex-auto border-b"></div>
 			</div>
@@ -339,6 +339,7 @@
 				{/each}
 			</div>
 		</div>
+		<div class="h-12"></div>
 		<div class="sticky bottom-0 flex items-center gap-4 border-t bg-background px-8 py-4">
 			<Form.Button disabled={$submitting}>
 				{#if $submitting}
